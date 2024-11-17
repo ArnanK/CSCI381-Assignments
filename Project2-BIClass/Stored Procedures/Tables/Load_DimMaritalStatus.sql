@@ -43,5 +43,6 @@ BEGIN
 		@WorkFlowStepDescription =  'Loading Data into the DimMaritalStatus Table',
 		@GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
 		@WorkFlowStepTableRowCount = @@ROWCOUNT;
+
 END
 GO
