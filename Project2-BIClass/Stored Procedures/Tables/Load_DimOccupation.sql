@@ -41,7 +41,7 @@ BEGIN
     ) AS O;
 
     EXEC Process.usp_TrackWorkFlow 
-        @WorkFlowStepDescription = 'Loading data into the DimOccupation Table', 
+        @WorkFlowStepDescription = 'Loading Occupation data into DimOccupation table', 
         @GroupMemberUserAuthorizationKey = @UserAuthorizationKey, 
         @WorkFlowStepTableRowCount = @@ROWCOUNT;
 END
