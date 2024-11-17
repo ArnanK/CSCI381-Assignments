@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:	    Dillon Chen
+-- Author:	   Dillon Chen
 -- Create date: 11/16/2024
 -- Description:	Provides the full descriptive name of the gender character.
 -- =============================================
