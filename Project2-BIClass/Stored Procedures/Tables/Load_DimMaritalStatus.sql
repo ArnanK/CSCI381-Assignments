@@ -30,7 +30,7 @@ BEGIN
 		MaritalStatus,
 		MaritalStatusDescription,
 		UserAuthorizationKey
-	)
+    )
     SELECT DISTINCT OLD.MaritalStatus,
         CASE
             WHEN OLD.MaritalStatus = 'M' THEN 'Married'
