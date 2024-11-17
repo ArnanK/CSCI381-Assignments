@@ -3,40 +3,45 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		YourName
--- Create date: 
--- Description:	
+-- Author:      Nafisul Islam
+-- Create date: 11/17/2024
+-- Description: Loads data into the SalesManagers table.
 -- =============================================
-ALTER PROCEDURE [Project2].[Load_SalesManagers] 
+DROP PROCEDURE IF EXISTS [Project2].[Load_SalesManagers]
+GO
+CREATE PROCEDURE [Project2].[Load_SalesManagers]
+    @UserAuthorizationKey INT
 AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
 
-	INSERT INTO [CH01-01-Dimension].SalesManagers
-	(
-		SalesManagerKey,
-		Category,
-		SalesManager,
-		Office
-	)
-	SELECT DISTINCT
-		SalesManagerKey,
-		old.ProductCategory,
-		SalesManager,
-		Office = CASE
-					 WHEN old.SalesManager LIKE 'Marco%' THEN
-						 'Redmond'
-					 WHEN old.SalesManager LIKE 'Alberto%' THEN
-						 'Seattle'
-					 WHEN old.SalesManager LIKE 'Maurizio%' THEN
-						 'Redmond'
-					 ELSE
-						 'Seattle'
-				 END
-	FROM FileUpload.OriginallyLoadedData AS old
-	ORDER BY old.SalesManagerKey;
+    INSERT INTO [CH01-01-Dimension].[SalesManagers] (
+        Category,
+        SalesManager,
+        Office
+    )
+    SELECT DISTINCT
+        NEXT VALUE FOR [Project2].[SalesManagersSequenceKeys] AS SalesManagerKey,
+        NULL AS Category, -- Adjust this according to the data
+        SalesManager,
+        CASE
+            WHEN SalesManager LIKE N'Maurizio%' OR SalesManager LIKE N'Marco%' THEN 'Redmond'
+            WHEN SalesManager LIKE N'Alberto%' OR SalesManager LIKE N'Luis%' THEN 'Seattle'
+            ELSE 'Seattle'
+        END AS Office
+    FROM (
+        SELECT DISTINCT SalesManager
+        FROM [FileUpload].OriginallyLoadedData
+    ) AS S;
+
+    SET @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assigning a value to the variable
+
+    EXEC Process.usp_TrackWorkFlow 
+        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepDescription = 'Loading data into the SalesManager Table',
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Calling the stored procedure
+
 END
 GO
