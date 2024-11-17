@@ -16,7 +16,11 @@ CREATE PROCEDURE [Project2].[Load_DimGender]
 AS
 BEGIN
     DECLARE @WorkFlowStepTableRowCount INT; -- Declare the variable here
-    INSERT INTO [CH01-01-Dimension].[DimGender] (Gender, GenderDescription, UserAuthorizationKey)
+    INSERT INTO [CH01-01-Dimension].[DimGender] (
+        Gender,
+        GenderDescription,
+        UserAuthorizationKey
+    )
     SELECT DISTINCT OLD.Gender,
         CASE
             WHEN OLD.Gender = 'M' THEN 'Male'
@@ -24,8 +28,9 @@ BEGIN
         END AS GenderDescription,
         @UserAuthorizationKey
     FROM FileUpload.OriginallyLoadedData AS OLD;
-    EXEC Process.usp_TrackWorkFlow @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
+    EXEC Process.usp_TrackWorkFlow 
         @WorkFlowStepDescription = 'Loading Gender data into Gender Table',
+        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
         @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assign value to the variable
 END
 GO
