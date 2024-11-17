@@ -25,7 +25,7 @@ BEGIN
     DROP TABLE IF EXISTS [Process].[WorkflowSteps];
     
     CREATE TABLE [Process].[WorkflowSteps](
-        WorkFlowStepKey INT NOT NULL, -- primary key
+        WorkFlowStepKey INT NOT NULL CONSTRAINT [DF_WorkflowSteps_Key] DEFAULT (NEXT VALUE FOR [PKSequence].[WorkflowStepsSequenceObject]), -- primary key
         WorkFlowStepDescription NVARCHAR (100) NOT NULL,
         WorkFlowStepTableRowCount INT NULL DEFAULT (0),
         StartingDateTime DATETIME2(7) NULL DEFAULT (SYSDATETIME ()),
@@ -42,12 +42,12 @@ BEGIN
    
     DROP TABLE IF EXISTS [DbSecurity].[UserAuthorization]
     CREATE TABLE [DbSecurity].[UserAuthorization](
-        UserAuthorizationKey INT NOT NULL, -- primary key
+        UserAuthorizationKey INT NOT NULL CONSTRAINT [DF_UserAuthorization_Key] DEFAULT (NEXT VALUE FOR [PKSequence].[UserAuthorizationSequenceObject]), -- primary key
         ClassTime nvarchar (5) Null Default'10:45',
         [Individual Project] nvarchar (60) null default 'PROJECT 2 RECREATE THE BICLASS DATABASE STAR SCHEMA',
         GroupMemberLastName nvarchar (35) NOT NULL,
         GroupMemberFirstName nvarchar (25) NOT NULL,
-        GroupName nvarchar (20) NOT NULL,
+        GroupName nvarchar (20) NOT NULL default 'Group 1',
         DateAdded datetime2 null default(SYSDATETIME())
     )
    
