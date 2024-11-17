@@ -1,7 +1,7 @@
 ## CSCI#381 
 ## Group#1
 
-# README for JDBC GUI Project#2
+# JDBC GUI Project#2
 
 ### **Introduction**
 Welcome to the **JDBC GUI Project** developed as part of the **CSCI_381 Project #2** assignment. This project creates a **Graphical User Interface (GUI)** to interact with a database using JDBC (Java Database Connectivity). 
