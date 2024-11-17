@@ -40,7 +40,7 @@ BEGIN
     FROM FileUpload.OriginallyLoadedData AS OLD;
 
     EXEC Process.usp_TrackWorkFlow
-		@WorkFlowStepDescription =  'Loading Data into the DimMaritalStatus Table',
+		@WorkFlowStepDescription =  'Loading Marital Status data into DimMaritalStatus table',
 		@GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
 		@WorkFlowStepTableRowCount = @@ROWCOUNT;
 
