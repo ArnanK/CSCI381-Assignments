@@ -16,8 +16,8 @@ BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
-    exec [Project2].[TruncateStarSchemaData] @GroupMemberUserAuthorizationKey = -1
-    exec [Project2].[DropForeignKeysFromStarSchemaData]
+    exec [Project2].[TruncateStarSchemaData] @GroupMemberUserAuthorizationKey = 2
+    exec [Project2].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 2
     
 
     --Convert Keys to Sequence Objects

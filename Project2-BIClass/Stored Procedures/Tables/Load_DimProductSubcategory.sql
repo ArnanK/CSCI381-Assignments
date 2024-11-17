@@ -8,6 +8,7 @@ GO
 -- Description:	
 -- =============================================
 ALTER PROCEDURE [Project2].[Load_DimProductSubcategory]
+    @UserAuthorizationKey INT
 AS
 BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from

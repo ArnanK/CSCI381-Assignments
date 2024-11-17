@@ -39,9 +39,9 @@ BEGIN
         @UserAuthorizationKey
     FROM FileUpload.OriginallyLoadedData AS OLD;
 
-    EXEC Process.usp_TrackWorkFlow
+    EXEC [Process].[usp_TrackWorkFlow]
 		@WorkFlowStepDescription =  'Loading Data into the DimMaritalStatus Table',
-		@GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
+		@UserAuthorizationKey = @UserAuthorizationKey,
 		@WorkFlowStepTableRowCount = @@ROWCOUNT;
 
 END

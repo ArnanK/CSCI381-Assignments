@@ -1,7 +1,7 @@
 
 
 ALTER PROCEDURE [Project2].[Load_Data]
-	@GroupMemberUserAuthorizationKey int
+	@UserAuthorizationKey int
 AS
 BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from

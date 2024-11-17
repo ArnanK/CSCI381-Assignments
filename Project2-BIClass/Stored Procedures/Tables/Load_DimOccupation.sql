@@ -40,9 +40,9 @@ BEGIN
         FROM FileUpload.OriginallyLoadedData
     ) AS O;
 
-    EXEC Process.usp_TrackWorkFlow 
+    EXEC [Process].[usp_TrackWorkFlow]
         @WorkFlowStepDescription = 'Loading data into the DimOccupation Table', 
-        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey, 
+        @UserAuthorizationKey = @UserAuthorizationKey, 
         @WorkFlowStepTableRowCount = @@ROWCOUNT;
 END
 GO

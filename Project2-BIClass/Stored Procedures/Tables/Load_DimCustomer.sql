@@ -43,4 +43,3 @@ BEGIN
 END
 GO
 
-EXEC [Project2].[Load_DimCustomer] @UserAuthorizationKey = 2;

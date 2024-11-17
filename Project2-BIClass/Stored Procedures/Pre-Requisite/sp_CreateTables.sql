@@ -41,6 +41,7 @@ BEGIN
     END
    
     DROP TABLE IF EXISTS [DbSecurity].[UserAuthorization]
+
     CREATE TABLE [DbSecurity].[UserAuthorization](
         UserAuthorizationKey INT NOT NULL CONSTRAINT [DF_UserAuthorization_Key] DEFAULT (NEXT VALUE FOR [PKSequence].[UserAuthorizationSequenceObject]), -- primary key
         ClassTime nvarchar (5) Null Default'10:45',

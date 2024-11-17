@@ -43,7 +43,7 @@ BEGIN
 
     EXEC Process.usp_TrackWorkFlow 
         @WorkFlowStepDescription = 'Loading data into the DimTerritory Table',
-        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey, 
+        @UserAuthorizationKey = @UserAuthorizationKey, 
         @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
 
 END
