@@ -1,17 +1,5 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		YourName
--- Create date: 
--- Description:	
---
--- @GroupMemberUserAuthorizationKey is the 
--- UserAuthorizationKey of the Group Member who completed 
--- this stored procedure.
---
--- =============================================
+
+
 ALTER PROCEDURE [Project2].[Load_Data]
 	@GroupMemberUserAuthorizationKey int
 AS
