@@ -11,8 +11,8 @@ IF NOT EXISTS (
     SELECT 1
     FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
-    AND TABLE_NAME = 'DimMaritalStatus'
-    AND COLUMN_NAME = 'UserAuthorizationKey'
+        AND TABLE_NAME = 'DimMaritalStatus'
+       AND COLUMN_NAME = 'UserAuthorizationKey'
 )
 BEGIN
     ALTER TABLE [CH01-01-Dimension].[DimMaritalStatus]
