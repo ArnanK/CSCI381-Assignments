@@ -10,7 +10,7 @@ GO
 -- =============================================
 -- GRANT DROP ON  ON SCHEMA:CH01-01-Fact TO sa
 
-DROP PROCEDURE IF EXISTS DropForeignKeys
+DROP PROCEDURE IF EXISTS [Project2].[DropForeignKeysFromStarSchemaData]
 GO
 
 CREATE PROCEDURE [Project2].[DropForeignKeysFromStarSchemaData]
