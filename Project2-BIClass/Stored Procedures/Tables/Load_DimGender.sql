@@ -15,7 +15,7 @@ CREATE PROCEDURE [Project2].[Load_DimGender]
     @UserAuthorizationKey INT
 AS
 BEGIN
-    DECLARE @WorkFlowStepTableRowCount INT; -- Declare the variable here
+    DECLARE @WorkFlowStepTableRowCount INT;
     INSERT INTO [CH01-01-Dimension].[DimGender] (
         Gender,
         GenderDescription,
@@ -31,6 +31,6 @@ BEGIN
     EXEC Process.usp_TrackWorkFlow 
         @WorkFlowStepDescription = 'Loading Gender data into Gender Table',
         @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
-        @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assign value to the variable
+        @WorkFlowStepTableRowCount = @@ROWCOUNT;
 END
 GO
