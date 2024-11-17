@@ -28,9 +28,10 @@ BEGIN
         END AS GenderDescription,
         @UserAuthorizationKey
     FROM FileUpload.OriginallyLoadedData AS OLD;
+    
     EXEC [Process].[usp_TrackWorkFlow]
         @WorkFlowStepDescription = 'Loading Gender data into Gender Table',
-        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
+        @UserAuthorizationKey = @UserAuthorizationKey,
         @WorkFlowStepTableRowCount = @@ROWCOUNT;
 END
 GO
