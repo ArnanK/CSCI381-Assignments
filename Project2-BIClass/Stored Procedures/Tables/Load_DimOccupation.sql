@@ -17,6 +17,7 @@ BEGIN
     ALTER TABLE [CH01-01-Dimension].[DimOccupation]
     ADD [UserAuthorizationKey] INT NULL;
 END;
+
 GO
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimOccupation];
 GO
@@ -38,6 +39,7 @@ BEGIN
 	SELECT DISTINCT Occupation
         FROM FileUpload.OriginallyLoadedData
     ) AS O;
+
     EXEC Process.usp_TrackWorkFlow 
         @WorkFlowStepDescription = 'Loading data into the DimOccupation Table', 
         @GroupMemberUserAuthorizationKey = @UserAuthorizationKey, 
