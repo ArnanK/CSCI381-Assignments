@@ -38,7 +38,7 @@ BEGIN
 
     SET @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assigning a value to the variable
 
-    EXEC Process.usp_TrackWorkFlow 
+    EXEC [Process].[usp_TrackWorkFlow] 
         @UserAuthorizationKey = @UserAuthorizationKey,
         @WorkFlowStepDescription = 'Loading data into the SalesManager Table',
         @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Calling the stored procedure

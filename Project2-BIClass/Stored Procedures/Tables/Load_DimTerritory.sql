@@ -41,7 +41,7 @@ BEGIN
     -- Assigning a value to the variable
     SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
 
-    EXEC Process.usp_TrackWorkFlow 
+    EXEC [Process].[usp_TrackWorkFlow] 
         @WorkFlowStepDescription = 'Loading data into the DimTerritory Table',
         @UserAuthorizationKey = @UserAuthorizationKey, 
         @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
