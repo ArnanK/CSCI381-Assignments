@@ -5,45 +5,45 @@ GO
 -- =============================================
 -- Author:      Nafisul Islam
 -- Create date: 11/17/2024
--- Description: Loads data into the SalesManagers table.
+-- Description: Loads data into the DimTerritory table.
 -- =============================================
-DROP PROCEDURE IF EXISTS [Project2].[Load_SalesManagers]
+
+DROP PROCEDURE IF EXISTS [Project2].[Load_DimTerritory]
 GO
-CREATE PROCEDURE [Project2].[Load_SalesManagers]
+CREATE PROCEDURE [Project2].[Load_DimTerritory]
     @UserAuthorizationKey INT
 AS
 BEGIN
     SET NOCOUNT ON;
-    DECLARE @UserAuthorizationKey INT;
-    SET @UserAuthorizationKey = 1;
+
     DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
 
-    INSERT INTO [CH01-01-Dimension].[SalesManagers] (
-        Category,
-        SalesManager,
-        Office,
+    INSERT INTO [CH01-01-Dimension].[DimTerritory] (
+        TerritoryGroup,
+        TerritoryCountry,
+        TerritoryRegion,
         UserAuthorizationKey
     )
-    SELECT DISTINCT
-        ProductCategory, -- Adjust this according to the data
-        SalesManager,
-        CASE
-            WHEN SalesManager LIKE N'Maurizio%' OR SalesManager LIKE N'Marco%' THEN 'Redmond'
-            WHEN SalesManager LIKE N'Alberto%' OR SalesManager LIKE N'Luis%' THEN 'Seattle'
-            ELSE 'Seattle'
-        END AS Office,
+    SELECT
+        TerritoryGroup,
+        TerritoryCountry,
+        TerritoryRegion,
         @UserAuthorizationKey
     FROM (
-        SELECT DISTINCT ProductCategory,SalesManager
+        SELECT DISTINCT 
+            TerritoryGroup, 
+            TerritoryCountry, 
+            TerritoryRegion
         FROM [FileUpload].OriginallyLoadedData
-    ) AS S;
+    ) AS T;
 
-    SET @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assigning a value to the variable
+    -- Assigning a value to the variable
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
 
     EXEC [Process].[usp_TrackWorkFlow] 
-        @UserAuthorizationKey = @UserAuthorizationKey,
-        @WorkFlowStepDescription = 'Loading data into the SalesManager Table',
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Calling the stored procedure
+        @WorkFlowStepDescription = 'Loading data into the DimTerritory Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
 
 END
 GO
