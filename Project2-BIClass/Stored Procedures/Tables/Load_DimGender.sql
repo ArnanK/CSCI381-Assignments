@@ -7,6 +7,13 @@ GO
 -- Create date: 11/16/2024
 -- Description:	Provides the full descriptive name of the gender character.
 -- =============================================
+IF NOT EXISTS (
+	SELECT 1
+	FROM INFORMATION_SCHEMA.COLUMNS
+	WHERE SCHEMA_NAME = 'CH01-01-Dimension'
+      AND TABLE_NAME = 'DimGender'
+	 AND COLUMN_NAME = 'UserAuthorizationKey'
+)
 ALTER TABLE [CH01-01-Dimension].[DimGender]
 ADD [UserAuthorizationKey] INT NULL;
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
