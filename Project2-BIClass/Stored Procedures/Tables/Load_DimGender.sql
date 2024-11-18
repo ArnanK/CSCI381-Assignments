@@ -10,9 +10,9 @@ GO
 IF NOT EXISTS (
 	SELECT 1
 	FROM INFORMATION_SCHEMA.COLUMNS
-	WHERE SCHEMA_NAME = 'CH01-01-Dimension'
-           AND TABLE_NAME = 'DimGender'
-	  AND COLUMN_NAME = 'UserAuthorizationKey'
+	WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
+            AND TABLE_NAME = 'DimGender'
+	   AND COLUMN_NAME = 'UserAuthorizationKey'
 )
 ALTER TABLE [CH01-01-Dimension].[DimGender]
 ADD [UserAuthorizationKey] INT NULL;
