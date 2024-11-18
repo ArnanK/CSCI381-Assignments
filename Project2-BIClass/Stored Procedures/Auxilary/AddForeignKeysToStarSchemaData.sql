@@ -38,3 +38,6 @@ BEGIN
     DEALLOCATE PrimaryKeyCursor
 END;
 GO
+
+
+--EXEC [Project2].[AddForeignKeysToStarSchemaData]

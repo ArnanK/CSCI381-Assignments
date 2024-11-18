@@ -17,39 +17,15 @@ BEGIN
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
  
-    -- List of tables where the column needs to be added
-    DECLARE @tables TABLE (TableName NVARCHAR(128));
-    INSERT INTO @tables (TableName)
-    VALUES 
-        ('DimCustomer'),
-        ('DimOccupation'),
-        ('DimProduct'),
-        ('DimTerritory'),
-        ('SalesManagers');
 
-    Declare @PrimaryKeyColumn NVARCHAR(128), @TableName NVARCHAR(128), @SQL1 VARCHAR(MAX);
+    ALTER TABLE [CH01-01-Dimension].[DimCustomer] DROP COLUMN CustomerKey
+    ALTER TABLE [CH01-01-Dimension].[DimOccupation] DROP COLUMN OccupationKey
+    ALTER TABLE [CH01-01-Dimension].[DimProduct] DROP COLUMN ProductKey
+    ALTER TABLE [CH01-01-Dimension].[DimTerritory] DROP COLUMN TerritoryKey
+    ALTER TABLE [CH01-01-Dimension].[SalesManagers] DROP COLUMN SalesManagerKey
+    ALTER TABLE [CH01-01-Fact].[Data] DROP COLUMN SalesKey
 
-    DECLARE DropColumnCursor CURSOR FOR 
-    SELECT '['+s.name+']'+'.'+'['+t.name+']' as FullyQualifiedTableName ,c.name AS PrimaryKeyColumn
-    FROM sys.tables t
-    INNER JOIN sys.indexes i ON t.object_id = i.object_id
-    INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
-    INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
-    INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
-    WHERE i.is_primary_key = 1 AND t.name IN (SELECT TableName FROM @tables) AND c.name LIKE '%Key';
-    
-    Open DropColumnCursor 
-    FETCH NEXT FROM DropColumnCursor INTO @TableName, @PrimaryKeyColumn
 
-    WHILE @@FETCH_STATUS = 0
-    BEGIN 
-        SET @SQL1 = 'ALTER TABLE ' + @TableName + ' DROP COLUMN' + '['+@PrimaryKeyColumn+']'+';'
-		EXEC(@SQL1)
-        FETCH NEXT FROM DropColumnCursor INTO @TableName, @PrimaryKeyColumn
-    END
-    
-    CLOSE DropColumnCursor
-	DEALLOCATE DropColumnCursor
 
 END;
 

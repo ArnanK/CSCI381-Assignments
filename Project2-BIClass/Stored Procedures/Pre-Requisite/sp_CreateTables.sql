@@ -56,7 +56,7 @@ BEGIN
     CREATE TABLE [CH01-01-Dimension].[DimProductCategory](
         [ProductCategoryKey] [int] NOT NULL CONSTRAINT [DF_DimProductCategory_Key] DEFAULT (NEXT VALUE FOR [PKSequence].[DimProductCategorySequenceObject]),
         [ProductCategory] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-        [UserAuthorizationKey] [int] NOT NULL,
+        --[UserAuthorizationKey] [int] NOT NULL,
         [DateAdded] [datetime2] NULL CONSTRAINT [DF_DimProductCategory_DateAdded] DEFAULT (sysdatetime()),
         [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DF_DimProductCategory_DateofLastUpdate] DEFAULT (sysdatetime())
     )
@@ -66,7 +66,7 @@ BEGIN
         [ProductSubcategoryKey] [int] NOT NULL CONSTRAINT [DF_DimProductSubcategory_Key] DEFAULT (NEXT VALUE FOR [PKSequence].[DimProductSubcategorySequenceObject]),
         [ProductCategoryKey] [int] NOT NULL,
         [ProductSubcategory] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-        [UserAuthorizationKey] [int] NOT NULL,
+        --[UserAuthorizationKey] [int] NOT NULL,
         [DateAdded] [datetime2] NULL CONSTRAINT [DFT_DimProductSubcategory_DateAdded] DEFAULT (sysdatetime()),
         [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DFT_DimProductSubcategory_DateofLastUpdate] DEFAULT (sysdatetime())
     )

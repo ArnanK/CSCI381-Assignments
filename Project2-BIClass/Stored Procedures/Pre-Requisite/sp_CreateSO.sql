@@ -13,10 +13,7 @@ GO
 CREATE OR ALTER PROCEDURE [Project2].[sp_CreateSO]
 AS
 BEGIN
- 
-
-    DROP SCHEMA IF EXISTS [PKSequence]
-   
+    
     IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'PKSequence')
     BEGIN
         EXEC('CREATE SCHEMA [PKSequence]');
@@ -94,6 +91,7 @@ BEGIN
         MAXVALUE 2147483647
         NO CYCLE
         CACHE
+
   
     CREATE SEQUENCE [PKSequence].[WorkflowStepsSequenceObject]
         AS int

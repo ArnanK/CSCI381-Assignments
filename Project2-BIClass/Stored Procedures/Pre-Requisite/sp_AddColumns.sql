@@ -18,17 +18,28 @@ BEGIN
     SET NOCOUNT ON;
  
     -- List of tables where the column needs to be added
-    DECLARE @tables TABLE (TableName NVARCHAR(128));
-    INSERT INTO @tables (TableName)
-    VALUES 
-        ('DimCustomer'),
-        ('DimGender'),
-        ('DimMaritalStatus'),
-        ('DimOccupation'),
-        ('DimOrderDate'),
-        ('DimProduct'),
-        ('DimTerritory'),
-        ('SalesManagers');
+    DECLARE @TableName VARCHAR(500), @SQL VARCHAR(MAX);
+    DECLARE AddCursor CURSOR FOR
+
+    SELECT DISTINCT
+        '[' + t.TABLE_SCHEMA + '].[' + t.TABLE_NAME + ']' as fullqualifiedtablename
+    FROM INFORMATION_SCHEMA.Tables as t
+    WHERE TABLE_SCHEMA LIKE '%CH1%'
+
+    OPEN AddCursor
+
+    FETCH NEXT FROM AddCursor INTO  @TableName
+
+    While @@FETCH_STATUS = 0
+    BEGIN 
+        SET @SQL = 'ALTER TABLE ' + @TableName + + 'ADD [UserAuthorizationKey] [int] NOT NULL;'
+        EXEC (@SQL)
+        FETCH NEXT FROM AddCursor INTO @TableName
+    END
+
+    CLOSE AddCursor
+    DEALLOCATE AddCursor
+
 
     --Convert Keys to Sequence Objects
     ALTER TABLE [CH01-01-Dimension].[DimCustomer]
@@ -39,18 +50,12 @@ BEGIN
     ADD ProductKey INT NOT NULL CONSTRAINT DF_DimProduct_Key DEFAULT(NEXT VALUE FOR [PKSequence].[DimProductSequenceObject]);
     ALTER TABLE [CH01-01-Dimension].[DimTerritory]
     ADD TerritoryKey INT NOT NULL CONSTRAINT DF_DimTerritory_Key DEFAULT(NEXT VALUE FOR [PKSequence].[DimTerritorySequenceObject]);
-    ALTER TABLE [CH01-01-Dimension].[DimSalesManagers]
-    ADD SalesManagersKey INT NOT NULL CONSTRAINT DF_DimSalesManagers_Key DEFAULT(NEXT VALUE FOR [PKSequence].[DimSalesManagersSequenceObject]);
+    ALTER TABLE [CH01-01-Dimension].[SalesManagers]
+    ADD SalesManagerKey INT NOT NULL CONSTRAINT DF_SalesManager_Key DEFAULT(NEXT VALUE FOR [PKSequence].[SalesManagersSequenceObject]);
+    ALTER TABLE [CH01-01-Fact].[Data]
+    ADD SalesKey INT NOT NULL CONSTRAINT DF_Sales_Key DEFAULT(NEXT VALUE FOR [PKSequence].[DataSequenceObject]);
+    
 
-
-    --Add User Authorization Key
-    DECLARE @SQL2 NVARCHAR(MAX);
-    -- Initialize the SQL string
-    SET @SQL2 = '';
-    SELECT @SQL2 = @SQL2 + 
-        'ALTER TABLE [CH01-01-Dimension].[' + TableName + '] ADD [UserAuthorizationKey] [int] NOT NULL;' + CHAR(13)
-    FROM @tables;
-    EXEC sp_executesql @SQL2;
 
     
 END;

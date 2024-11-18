@@ -25,17 +25,20 @@ BEGIN
         ('DimOccupation'),
         ('DimProduct'),
         ('DimTerritory'),
-        ('SalesManagers');
+        ('SalesManagers'),
+        ('Data'),
+        ('Fact');
+      
 
 
     Declare @ConstraintName NVARCHAR(128), @TableName NVARCHAR(128), @SQL1 VARCHAR(MAX);
 
     DECLARE DropPkCursor CURSOR FOR 
-    SELECT '['+s.name+']' + '.'+ '['+t.name+']' AS TableName, kc.name AS ConstraintName
-    FROM sys.tables t
-    INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
-    INNER JOIN sys.key_constraints kc ON t.object_id = kc.parent_object_id
-    WHERE kc.type = 'PK'  AND t.name IN (SELECT TableName FROM @tables)
+    SELECT '['+kcu.TABLE_SCHEMA+'].['+kcu.TABLE_NAME+']' as [TableName], kcu.CONSTRAINT_NAME as [ConstrainName]
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE as kcu
+    WHERE kcu.CONSTRAINT_NAME LIKE '%PK%' AND kcu.TABLE_NAME IN (SELECT * FROM @tables)
+    
+
 
     
     Open DropPkCursor 
@@ -43,7 +46,7 @@ BEGIN
 
     WHILE @@FETCH_STATUS = 0
     BEGIN 
-        SET @SQL1 = 'ALTER TABLE ' + @TableName + ' DROP CONSTRAINT' + '['+@ConstraintName+']'+';'
+        SET @SQL1 = 'ALTER TABLE ' + @TableName + ' DROP CONSTRAINT ' + '['+@ConstraintName+']'+';'
 		EXEC(@SQL1)
         FETCH NEXT FROM DropPkCursor INTO @TableName, @ConstraintName
     END

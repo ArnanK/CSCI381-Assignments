@@ -10,6 +10,12 @@ Stores procedure logs workflow steps into the Process.WorkFlowSteps
 */
 -- =============================================
 
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Process')
+BEGIN
+    EXEC('CREATE SCHEMA [Process]');
+END
+GO
+
 CREATE OR ALTER PROCEDURE [Process].[usp_TrackWorkFlow]
     @UserAuthorizationKey INT,
     @WorkFlowStepTableRowCount INT,

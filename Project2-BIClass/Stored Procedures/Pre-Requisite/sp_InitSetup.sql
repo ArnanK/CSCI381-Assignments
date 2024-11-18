@@ -16,15 +16,15 @@ BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
-    exec [Project2].[sp_CreateTables]
     exec [Project2].[sp_CreateSO]
+    exec [Project2].[sp_CreateTables]
     exec [Project2].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 2;
     exec [Project2].[TruncateStarSchemaData] @UserAuthorizationKey = 2;
     exec [Project2].[sp_DropPkConstraint]
     exec [Project2].[sp_DropColumns]
     exec [Project2].[sp_AddColumns]
     exec [Project2].[sp_AddPkConstraint]
-    exec [Project2].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 2;
+    exec [Project2].[AddForeignKeysToStarSchemaData];
     exec [Project2].[sp_AddGroupMembers]
     
 END;
