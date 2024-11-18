@@ -21,6 +21,7 @@ END;
 
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
 GO
+
 CREATE PROCEDURE [Project2].[Load_DimGender]
     @UserAuthorizationKey INT
 AS

@@ -28,10 +28,11 @@ AS
 BEGIN 
     SET NOCOUNT ON
     DECLARE @ModifiedRowsCount INT
+    DECLARE @KeyHolder INT = @UserAuthorizationKey
 
     INSERT INTO [CH01-01-Dimension].[DimCustomer] (CustomerKey, CustomerName, UserAuthorizationKey)
         SELECT 
-            NEXT VALUE FOR /*insert customer sequence key object*/ as customerkey,
+            NEXT VALUE FOR [PKSequence].[DimCustomerSequenceObject] as customerkey,
             old.CustomerName,
             @UserAuthorizationKey
         FROM (
@@ -39,6 +40,11 @@ BEGIN
             old.CustomerName
             FROM FileUpload.OriginallyLoadedData as old
         )
+
+    -- get rowcount of modified dimcustomer talbe
+    SELECT @ModifiedRowsCount INT = @@ROWCOUNT;
+
+    EXEC [Process].[usp_TrackWorkFlow] @UserAuthorizationKey = @KeyHolder, @WorkFlowStepTableRowCount = @ModifiedRowsCount, @WorkFlowStepDescription = 'Loading into dimcustomer table'
 
 END
 GO
