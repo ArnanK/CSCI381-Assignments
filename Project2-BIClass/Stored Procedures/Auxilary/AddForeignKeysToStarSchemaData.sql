@@ -38,4 +38,3 @@ BEGIN
     DEALLOCATE PrimaryKeyCursor
 END;
 GO
-
