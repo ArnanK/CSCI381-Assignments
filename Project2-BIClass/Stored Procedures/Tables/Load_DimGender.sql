@@ -14,8 +14,11 @@ IF NOT EXISTS (
             AND TABLE_NAME = 'DimGender'
 	   AND COLUMN_NAME = 'UserAuthorizationKey'
 )
+BEGIN
 ALTER TABLE [CH01-01-Dimension].[DimGender]
 ADD [UserAuthorizationKey] INT NULL;
+END
+
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
 GO
 CREATE PROCEDURE [Project2].[Load_DimGender]
