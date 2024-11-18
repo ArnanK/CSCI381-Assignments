@@ -13,16 +13,28 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
     -- Insert the data from the FileUpload
     INSERT INTO [CH01-01-Dimension].[DimProductSubcategory] (
-        ProductSubcategory
+        ProductSubcategory,
+        ProductCategoryKey,
+        UserAuthorizationKey
     )
     SELECT DISTINCT
-        NEXT VALUE FOR [Project2].[ProductCategorySubcategorySequenceKey] AS ProductSubcategoryKey,
-        OLD.ProductSubcategory
+        OLD.ProductSubcategory,
+        OLD.ProductCategoryKey,
+        @UserAuthorizationKey
     FROM (
-        SELECT DISTINCT ProductSubcategory
-        FROM [FileUpload].OriginallyLoadedData
+        SELECT DISTINCT d.ProductSubcategory, c.ProductCategoryKey
+        FROM [FileUpload].OriginallyLoadedData d
+        INNER JOIN [CH01-01-Dimension].DimProductCategory c on d.ProductCategory = c.ProductCategory      
     ) AS OLD;
+
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @WorkFlowStepDescription = 'Loading data into the DimProductSubcategory Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
+
 END;
 GO

@@ -25,7 +25,6 @@ BEGIN
         UserAuthorizationKey
     )
     SELECT
-        NEXT VALUE FOR [Project2].[DimTerritorySequenceKeys],
         TerritoryGroup,
         TerritoryCountry,
         TerritoryRegion,

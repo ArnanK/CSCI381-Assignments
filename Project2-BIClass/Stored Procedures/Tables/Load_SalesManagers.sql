@@ -14,25 +14,27 @@ CREATE PROCEDURE [Project2].[Load_SalesManagers]
 AS
 BEGIN
     SET NOCOUNT ON;
-
+    DECLARE @UserAuthorizationKey INT;
+    SET @UserAuthorizationKey = 1;
     DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
 
     INSERT INTO [CH01-01-Dimension].[SalesManagers] (
         Category,
         SalesManager,
-        Office
+        Office,
+        UserAuthorizationKey
     )
     SELECT DISTINCT
-        NEXT VALUE FOR [Project2].[SalesManagersSequenceKeys] AS SalesManagerKey,
-        NULL AS Category, -- Adjust this according to the data
+        ProductCategory, -- Adjust this according to the data
         SalesManager,
         CASE
             WHEN SalesManager LIKE N'Maurizio%' OR SalesManager LIKE N'Marco%' THEN 'Redmond'
             WHEN SalesManager LIKE N'Alberto%' OR SalesManager LIKE N'Luis%' THEN 'Seattle'
             ELSE 'Seattle'
-        END AS Office
+        END AS Office,
+        @UserAuthorizationKey
     FROM (
-        SELECT DISTINCT SalesManager
+        SELECT DISTINCT ProductCategory,SalesManager
         FROM [FileUpload].OriginallyLoadedData
     ) AS S;
 
