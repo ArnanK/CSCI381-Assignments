@@ -3,19 +3,41 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		YourName
--- Create date: 
--- Description:	
+-- Author:      Nafisul Islam
+-- Create date: 11/17/2024
+-- Description: Loads data into the DimProduct table.
 -- =============================================
 ALTER PROCEDURE [Project2].[Load_DimProduct]
-	@UserAuthorizationKey INT
+    @UserAuthorizationKey INT
 AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
+    SET NOCOUNT ON;
 
-	SET NOCOUNT ON;
-PRINT 'Hi'
-		   
+    -- Insert data into DimProduct table
+    INSERT INTO [CH01-01-Dimension].[DimProduct] (
+        ProductCategoryKey,
+        ProductCode,
+        ProductName,
+        Color,
+        ModelName
+    )
+    SELECT DISTINCT
+        NEXT VALUE FOR [Project2].[DimProductSequenceKey] AS ProductKey,
+        new.ProductCategoryKey,
+        new.ProductCode,
+        new.ProductName,
+        new.Color,
+        new.ModelName
+    FROM (
+        SELECT DISTINCT
+            ProductCategoryKey,
+            ProductCode,
+            ProductName,
+            Color,
+            ModelName
+        FROM [FileUpload].OriginallyLoadedData AS old
+        INNER JOIN [CH01-01-Dimension].[DimProductCategory] AS dpc
+        ON old.ProductCategory = dpc.ProductCategory
+    ) AS new;
 END
 GO

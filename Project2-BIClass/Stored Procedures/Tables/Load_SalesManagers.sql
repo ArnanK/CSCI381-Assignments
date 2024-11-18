@@ -2,8 +2,9 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 -- =============================================
--- Author:      Nafisul Islam
+-- Author:      Inderpreet Singh
 -- Create date: 11/17/2024
 -- Description: Loads data into the SalesManagers table.
 -- =============================================
@@ -14,8 +15,7 @@ CREATE PROCEDURE [Project2].[Load_SalesManagers]
 AS
 BEGIN
     SET NOCOUNT ON;
-    DECLARE @UserAuthorizationKey INT;
-    SET @UserAuthorizationKey = 1;
+
     DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
 
     INSERT INTO [CH01-01-Dimension].[SalesManagers] (
@@ -34,7 +34,7 @@ BEGIN
         END AS Office,
         @UserAuthorizationKey
     FROM (
-        SELECT DISTINCT ProductCategory,SalesManager
+        SELECT DISTINCT ProductCategory, SalesManager
         FROM [FileUpload].OriginallyLoadedData
     ) AS S;
 
