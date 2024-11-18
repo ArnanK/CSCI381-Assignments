@@ -14,18 +14,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Create Sequence if it doesn't already exist
-    IF NOT EXISTS (
-        SELECT 1 
-        FROM sys.objects 
-        WHERE name = 'DataSequenceKey' AND type = 'SO'
-    )
-    BEGIN
-        CREATE SEQUENCE [Project2].[DataSequenceKey]
-            START WITH 1
-            INCREMENT BY 1;
-    END;
-
     DECLARE @WorkFlowStepTableRowCount INT;
 
     -- Insert data into Fact.Data table
@@ -107,7 +95,7 @@ BEGIN
     SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
 
     -- Track workflow for the operation
-    EXEC Process.usp_TrackWorkFlow
+    EXEC [Process].[usp_TrackWorkFlow]
         @WorkFlowStepDescription = 'Loaded all data into Fact.Data table',
         @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
         @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
