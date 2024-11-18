@@ -17,7 +17,7 @@ IF NOT EXISTS (
 BEGIN
     ALTER TABLE [CH01-01-Dimension].[DimGender]
     ADD [UserAuthorizationKey] INT NULL;
-END
+END;
 
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
 GO
