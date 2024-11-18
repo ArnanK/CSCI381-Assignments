@@ -40,34 +40,8 @@ BEGIN
         NO CYCLE
         CACHE
     
-    CREATE SEQUENCE [PKSequence].[DimGenderSequenceObject]
-        AS int
-        START WITH 1
-        INCREMENT BY 1
-        MINVALUE 1
-        MAXVALUE 2
-        NO CYCLE
-        CACHE
-   
-    CREATE SEQUENCE [PKSequence].[DimMaritalStatusSequenceObject]
-        AS int
-        START WITH 1
-        INCREMENT BY 1
-        MINVALUE 1
-        MAXVALUE 2
-        NO CYCLE
-        CACHE
    
     CREATE SEQUENCE [PKSequence].[DimOccupationSequenceObject]
-        AS int
-        START WITH 1
-        INCREMENT BY 1
-        MINVALUE 1
-        MAXVALUE 2147483647
-        NO CYCLE
-        CACHE
-    
-    CREATE SEQUENCE [PKSequence].[DimOrderDateSequenceObject]
         AS int
         START WITH 1
         INCREMENT BY 1
