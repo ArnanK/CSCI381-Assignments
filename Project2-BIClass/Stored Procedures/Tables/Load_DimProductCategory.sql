@@ -4,7 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
 -- Author:      Nafisul Islam
--- Create date: 
+-- Create date: 11/17/2024
 -- Description: Loads data into the DimProductCategory table.
 -- =============================================
 ALTER PROCEDURE [Project2].[Load_DimProductCategory]
