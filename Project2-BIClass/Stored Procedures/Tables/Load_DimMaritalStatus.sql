@@ -31,8 +31,9 @@ BEGIN
 		MaritalStatusDescription,
 		UserAuthorizationKey
     )
-    SELECT DISTINCT OLD.MaritalStatus,
-        CASE
+    SELECT DISTINCT 
+	OLD.MaritalStatus,
+	CASE
             WHEN OLD.MaritalStatus = 'M' THEN 'Married'
             WHEN OLD.MaritalStatus = 'S' THEN 'Single'
         END AS MaritalStatusDescription,
