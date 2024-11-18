@@ -24,7 +24,7 @@ BEGIN
     SELECT DISTINCT
         '[' + t.TABLE_SCHEMA + '].[' + t.TABLE_NAME + ']' as fullqualifiedtablename
     FROM INFORMATION_SCHEMA.Tables as t
-    WHERE TABLE_SCHEMA LIKE '%CH1%'
+    WHERE TABLE_SCHEMA LIKE '%CH01%'
 
     OPEN AddCursor
 

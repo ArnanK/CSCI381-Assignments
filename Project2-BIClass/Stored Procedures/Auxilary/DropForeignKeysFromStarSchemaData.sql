@@ -43,5 +43,11 @@ BEGIN
 
     CLOSE ForeignKeyCursor
     DEALLOCATE ForeignKeyCursor
+
+    --Manual Process for Dim.Product Table
+    ALTER TABLE [CH01-01-Dimension].[DimProduct] DROP CONSTRAINT IF EXISTS FK_DimProductSubcategory;
+    ALTER TABLE [CH01-01-Dimension].[DimProductSubcategory] DROP CONSTRAINT IF EXISTS FK_DimProductCategory;
+
+
 END;
 GO

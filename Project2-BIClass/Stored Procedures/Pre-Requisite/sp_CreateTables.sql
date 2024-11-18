@@ -61,8 +61,8 @@ BEGIN
         [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DF_DimProductCategory_DateofLastUpdate] DEFAULT (sysdatetime())
     )
    
-    DROP TABLE IF EXISTS [CH01-01-Dimension].[DimProductSubCategory]
-    CREATE TABLE [CH01-01-Dimension].[DimProductSubCategory](
+    DROP TABLE IF EXISTS [CH01-01-Dimension].[DimProductSubcategory]
+    CREATE TABLE [CH01-01-Dimension].[DimProductSubcategory](
         [ProductSubcategoryKey] [int] NOT NULL CONSTRAINT [DF_DimProductSubcategory_Key] DEFAULT (NEXT VALUE FOR [PKSequence].[DimProductSubcategorySequenceObject]),
         [ProductCategoryKey] [int] NOT NULL,
         [ProductSubcategory] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
