@@ -7,18 +7,6 @@ GO
 -- Create date: 11/16/2024
 -- Description:	Provides the full descriptive name of the gender character.
 -- =============================================
-IF NOT EXISTS (
-	SELECT 1
-	FROM INFORMATION_SCHEMA.COLUMNS
-	WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
-            AND TABLE_NAME = 'DimGender'
-	   AND COLUMN_NAME = 'UserAuthorizationKey'
-)
-BEGIN
-    ALTER TABLE [CH01-01-Dimension].[DimGender]
-    ADD [UserAuthorizationKey] INT NULL;
-END;
-
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
 GO
 
@@ -39,7 +27,7 @@ BEGIN
         END AS GenderDescription,
         @UserAuthorizationKey
     FROM FileUpload.OriginallyLoadedData AS OLD;
-    
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
     EXEC [Process].[usp_TrackWorkFlow]
         @WorkFlowStepDescription = 'Loading Gender data into Gender Table',
         @UserAuthorizationKey = @UserAuthorizationKey,

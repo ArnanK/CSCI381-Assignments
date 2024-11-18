@@ -27,25 +27,28 @@ CREATE PROCEDURE [Project2].[Load_DimCustomer]
 AS
 BEGIN 
     SET NOCOUNT ON
-    DECLARE @ModifiedRowsCount INT
-    DECLARE @KeyHolder INT = @UserAuthorizationKey
+    DECLARE @WorkFlowStepTableRowCount INT
 
-    INSERT INTO [CH01-01-Dimension].[DimCustomer] (CustomerKey, CustomerName, UserAuthorizationKey)
-        SELECT 
-            NEXT VALUE FOR [PKSequence].[DimCustomerSequenceObject] as customerkey,
-            old.CustomerName,
-            @UserAuthorizationKey
-        FROM (
-            SELECT DISTINCT 
-            old.CustomerName
-            FROM FileUpload.OriginallyLoadedData as old
-        )
+    INSERT INTO [CH01-01-Dimension].[DimCustomer] 
+    (
+        CustomerName, UserAuthorizationKey
+    )
+    SELECT 
+        new.CustomerName,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT 
+        old.CustomerName
+        FROM FileUpload.OriginallyLoadedData as old
+    ) as new
 
     -- get rowcount of modified dimcustomer talbe
-    SELECT @ModifiedRowsCount INT = @@ROWCOUNT;
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
 
-    EXEC [Process].[usp_TrackWorkFlow] @UserAuthorizationKey = @KeyHolder, @WorkFlowStepTableRowCount = @ModifiedRowsCount, @WorkFlowStepDescription = 'Loading into dimcustomer table'
-
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Loading Customer into the DimCustomer Table.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = @@ROWCOUNT;
 END
 GO
 

@@ -27,19 +27,17 @@ AS
 BEGIN
     DECLARE @WorkFlowStepTableRowCount INT;
     INSERT INTO [CH01-01-Dimension].[DimOccupation] (
-	    OccupationKey,
 	    Occupation,
 	    UserAuthorizationKey
     )
     SELECT
-        NEXT VALUE FOR [Project2].[DimOccupationSequenceKeys],
         O.Occupation,
         @UserAuthorizationKey
     FROM (
 	SELECT DISTINCT Occupation
         FROM FileUpload.OriginallyLoadedData
     ) AS O;
-
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
     EXEC [Process].[usp_TrackWorkFlow]
         @WorkFlowStepDescription = 'Loading data into the DimOccupation Table', 
         @UserAuthorizationKey = @UserAuthorizationKey, 

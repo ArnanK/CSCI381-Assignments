@@ -40,10 +40,10 @@ BEGIN
         [Year],
         @UserAuthorizationKey
     FROM [FileUpload].OriginallyLoadedData;
-
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
     EXEC Process.usp_TrackWorkFlow 
         @WorkFlowStepDescription = 'Loading OrderDate data into DimOrderDate table', 
-        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey, 
+        @UserAuthorizationKey = @UserAuthorizationKey, 
         @WorkFlowStepTableRowCount = @@ROWCOUNT;
 END
 GO
