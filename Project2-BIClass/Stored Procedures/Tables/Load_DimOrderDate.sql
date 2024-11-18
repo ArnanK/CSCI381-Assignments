@@ -10,8 +10,9 @@ GO
 IF NOT EXISTS (
 	SELECT 1
 	FROM INFORMATION_SCHEMA.COLUMNS
-	WHERE TABLE_NAME = 'DimOrderDate'
-	 AND COLUMN_NAME = 'UserAuthorizationKey'
+	WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
+	    AND TABLE_NAME = 'DimOrderDate'
+	   AND COLUMN_NAME = 'UserAuthorizationKey'
 )
 ALTER TABLE [CH01-01-Dimension].[DimOrderDate]
 ADD [UserAuthorizationKey] INT NULL;
