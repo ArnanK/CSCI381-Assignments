@@ -3,6 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 ALTER PROCEDURE [Project2].[ShowTableStatusRowCount] 
+@UserAuthorizationKey INT,
 @TableStatus VARCHAR(64)
 
 AS
@@ -24,5 +25,9 @@ BEGIN
 	select TableStatus = @TableStatus, TableName ='CH01-01-Dimension.SalesManagers', COUNT(*) FROM [CH01-01-Dimension].SalesManagers
 	select TableStatus = @TableStatus, TableName ='CH01-01-Fact.Data', COUNT(*) FROM [CH01-01-Fact].Data
 
+	EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Show Table Status Row Count.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO

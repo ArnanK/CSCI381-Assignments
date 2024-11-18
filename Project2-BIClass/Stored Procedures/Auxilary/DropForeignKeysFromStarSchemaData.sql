@@ -11,6 +11,7 @@ GO
 -- GRANT DROP ON  ON SCHEMA:CH01-01-Fact TO sa
 
 DROP PROCEDURE IF EXISTS [Project2].[DropForeignKeysFromStarSchemaData]
+
 GO
 
 CREATE PROCEDURE [Project2].[DropForeignKeysFromStarSchemaData]
@@ -48,6 +49,10 @@ BEGIN
     ALTER TABLE [CH01-01-Dimension].[DimProduct] DROP CONSTRAINT IF EXISTS FK_DimProductSubcategory;
     ALTER TABLE [CH01-01-Dimension].[DimProductSubcategory] DROP CONSTRAINT IF EXISTS FK_DimProductCategory;
 
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Drop Foreign Keys.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 
 END;
 GO

@@ -11,6 +11,8 @@ GO
 --
 -- =============================================
 CREATE OR ALTER PROCEDURE [Project2].[sp_DropPkConstraint]
+	@UserAuthorizationKey int
+
 AS
 BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -54,7 +56,10 @@ BEGIN
     CLOSE DropPkCursor
 	DEALLOCATE DropPkCursor
 
-
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Drop PK Constraints.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 
 END;
 

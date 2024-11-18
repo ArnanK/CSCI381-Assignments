@@ -12,32 +12,46 @@ ALTER PROCEDURE [Project2].[Load_DimProduct]
 AS
 BEGIN
     SET NOCOUNT ON;
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
 
     -- Insert data into DimProduct table
     INSERT INTO [CH01-01-Dimension].[DimProduct] (
-        ProductCategoryKey,
+        ProductSubcategoryKey,
+        ProductCategory,
+        ProductSubcategory,
         ProductCode,
         ProductName,
         Color,
-        ModelName
+        ModelName,
+        UserAuthorizationKey
     )
     SELECT DISTINCT
-        NEXT VALUE FOR [Project2].[DimProductSequenceKey] AS ProductKey,
-        new.ProductCategoryKey,
+        new.ProductSubcategoryKey,
+        new.ProductCategory,
+        new.ProductSubcategory,
         new.ProductCode,
         new.ProductName,
         new.Color,
-        new.ModelName
+        new.ModelName,
+        @UserAuthorizationKey
     FROM (
         SELECT DISTINCT
-            ProductCategoryKey,
+            dps.ProductSubcategoryKey,
+            dpc.ProductCategory,
+            dps.ProductSubcategory,
             ProductCode,
             ProductName,
             Color,
             ModelName
         FROM [FileUpload].OriginallyLoadedData AS old
-        INNER JOIN [CH01-01-Dimension].[DimProductCategory] AS dpc
-        ON old.ProductCategory = dpc.ProductCategory
+        INNER JOIN [CH01-01-Dimension].[DimProductCategory] AS dpc ON old.ProductCategory = dpc.ProductCategory
+        INNER JOIN [CH01-01-Dimension].[DimProductSubcategory] as dps ON old.ProductSubcategory = dps.ProductSubcategory
     ) AS new;
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @WorkFlowStepDescription = 'Loading data into the DimProduct Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
+
 END
 GO

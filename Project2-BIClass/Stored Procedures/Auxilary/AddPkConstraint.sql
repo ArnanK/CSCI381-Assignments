@@ -11,6 +11,8 @@ GO
 --
 -- =============================================
 CREATE OR ALTER PROCEDURE [Project2].[sp_AddPkConstraint]
+	@UserAuthorizationKey int
+
 AS
 BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -25,6 +27,10 @@ BEGIN
     ALTER TABLE [CH01-01-Dimension].[SalesManagers]  ADD CONSTRAINT PK_SalesManagerKey PRIMARY KEY(SalesManagerKey);
     ALTER TABLE [CH01-01-Fact].[Data]  ADD CONSTRAINT PK_SalesKey PRIMARY KEY(SalesKey);
 
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Add PK Constraint.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 
 END;
 

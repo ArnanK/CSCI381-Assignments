@@ -8,6 +8,8 @@ GO
 -- Description:	add foreign keys to star schema
 -- =============================================
 ALTER PROCEDURE [Project2].[AddForeignKeysToStarSchemaData]
+	@UserAuthorizationKey int
+
 AS
 BEGIN
     SET NOCOUNT ON
@@ -47,6 +49,12 @@ BEGIN
     ALTER TABLE [CH01-01-Dimension].[DimProductSubcategory]
     ADD CONSTRAINT FK_DimProductCategory Foreign Key(ProductCategoryKey)
     REFERENCES [CH01-01-Dimension].[DimProductCategory](ProductCategoryKey)
+
+    
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Add Foreign Keys.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 
 END;
 GO

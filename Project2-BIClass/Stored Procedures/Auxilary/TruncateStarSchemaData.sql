@@ -41,6 +41,10 @@ BEGIN
 
 	DEALLOCATE TableCursor
 
+	EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Truncate Star Schema Data.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
 

@@ -41,6 +41,10 @@ BEGIN
 
 	DEALLOCATE SequenceObjectCursor
 
+	EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Reset Sequence Objects.',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
 
