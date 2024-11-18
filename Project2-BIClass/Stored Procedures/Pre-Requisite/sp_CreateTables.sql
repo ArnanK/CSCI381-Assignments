@@ -58,7 +58,8 @@ BEGIN
         [ProductCategory] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
         --[UserAuthorizationKey] [int] NOT NULL,
         [DateAdded] [datetime2] NULL CONSTRAINT [DF_DimProductCategory_DateAdded] DEFAULT (sysdatetime()),
-        [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DF_DimProductCategory_DateofLastUpdate] DEFAULT (sysdatetime())
+        [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DF_DimProductCategory_DateofLastUpdate] DEFAULT (sysdatetime()),
+        CONSTRAINT [PK_DimProductCategory] PRIMARY KEY ([ProductCategoryKey])
     )
    
     DROP TABLE IF EXISTS [CH01-01-Dimension].[DimProductSubcategory]
@@ -68,7 +69,8 @@ BEGIN
         [ProductSubcategory] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
         --[UserAuthorizationKey] [int] NOT NULL,
         [DateAdded] [datetime2] NULL CONSTRAINT [DFT_DimProductSubcategory_DateAdded] DEFAULT (sysdatetime()),
-        [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DFT_DimProductSubcategory_DateofLastUpdate] DEFAULT (sysdatetime())
+        [DateofLastUpdate] [datetime2] NULL CONSTRAINT [DFT_DimProductSubcategory_DateofLastUpdate] DEFAULT (sysdatetime()),
+        CONSTRAINT [PK_DimProductSubcategory] PRIMARY KEY ([ProductSubcategoryKey])
     )
 
 END;

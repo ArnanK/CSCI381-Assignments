@@ -25,7 +25,7 @@ BEGIN
     DECLARE ForeignKeyCursor CURSOR FOR 
     
     SELECT fk.name as ForeignKeyName,
-        QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id)) + '.Data' as TableName
+        QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id)) + '.'+t.name as TableName
     FROM sys.foreign_keys as fk
     INNER JOIN sys.tables as t on fk.parent_object_id = t.object_id
 
