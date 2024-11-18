@@ -19,7 +19,6 @@ BEGIN
     ADD [UserAuthorizationKey] INT NULL;
 END;
 
-GO
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimOccupation];
 GO
 CREATE PROCEDURE [Project2].[Load_DimOccupation]
