@@ -99,6 +99,7 @@ BEGIN
 	    @WorkFlowStepDescription = 'Loaded all data into Fact.Data table',
 	    @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
 	    @WorkFlowStepTableRowCount = @@ROWCOUNT;
-END
+    END;
+END;
 GO
 
