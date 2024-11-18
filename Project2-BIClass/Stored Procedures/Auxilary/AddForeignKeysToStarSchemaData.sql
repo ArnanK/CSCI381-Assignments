@@ -39,4 +39,3 @@ BEGIN
 END;
 GO
 
-EXEC [Project2].[AddForeignKeysToStarSchemaData]
