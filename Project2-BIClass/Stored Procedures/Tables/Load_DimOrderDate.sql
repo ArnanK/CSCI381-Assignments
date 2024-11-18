@@ -14,8 +14,10 @@ IF NOT EXISTS (
 	    AND TABLE_NAME = 'DimOrderDate'
 	   AND COLUMN_NAME = 'UserAuthorizationKey'
 )
-ALTER TABLE [CH01-01-Dimension].[DimOrderDate]
-ADD [UserAuthorizationKey] INT NULL;
+BEGIN
+    ALTER TABLE [CH01-01-Dimension].[DimOrderDate]
+    ADD [UserAuthorizationKey] INT NULL;
+END;
 
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimOrderDate];
 GO
