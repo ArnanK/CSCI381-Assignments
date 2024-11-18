@@ -10,8 +10,9 @@ GO
 IF NOT EXISTS (
 	SELECT 1
 	FROM INFORMATION_SCHEMA.COLUMNS
-	WHERE TABLE_NAME = 'DimOccupation'
-	 AND COLUMN_NAME = 'UserAuthorizationKey'
+	WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
+	    AND TABLE_NAME = 'DimOccupation'
+	   AND COLUMN_NAME = 'UserAuthorizationKey'
 )
 BEGIN
     ALTER TABLE [CH01-01-Dimension].[DimOccupation]
