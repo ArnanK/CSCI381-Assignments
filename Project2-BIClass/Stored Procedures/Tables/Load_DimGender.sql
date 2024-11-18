@@ -15,8 +15,8 @@ IF NOT EXISTS (
 	   AND COLUMN_NAME = 'UserAuthorizationKey'
 )
 BEGIN
-ALTER TABLE [CH01-01-Dimension].[DimGender]
-ADD [UserAuthorizationKey] INT NULL;
+    ALTER TABLE [CH01-01-Dimension].[DimGender]
+    ADD [UserAuthorizationKey] INT NULL;
 END
 
 DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
