@@ -2,18 +2,20 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 -- =============================================
--- Author:      Nafisul Islam
+-- Author:    Nafisul Islam, debugged by:Inderpreet Singh
 -- Create date: 11/17/2024
 -- Description: Loads data into the DimProductSubcategory table.
 -- =============================================
-ALTER PROCEDURE [Project2].[Load_DimProductSubcategory]
+CREATE OR ALTER PROCEDURE [Project2].[Load_DimProductSubcategory]
     @UserAuthorizationKey INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
     DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+    
     -- Insert the data from the FileUpload
     INSERT INTO [CH01-01-Dimension].[DimProductSubcategory] (
         ProductSubcategory,
@@ -27,14 +29,15 @@ BEGIN
     FROM (
         SELECT DISTINCT d.ProductSubcategory, c.ProductCategoryKey
         FROM [FileUpload].OriginallyLoadedData d
-        INNER JOIN [CH01-01-Dimension].DimProductCategory c on d.ProductCategory = c.ProductCategory      
+        INNER JOIN [CH01-01-Dimension].DimProductCategory c ON d.ProductCategory = c.ProductCategory      
     ) AS OLD;
 
     SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
     EXEC [Process].[usp_TrackWorkFlow] 
         @WorkFlowStepDescription = 'Loading data into the DimProductSubcategory Table',
         @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
 
 END;
 GO
