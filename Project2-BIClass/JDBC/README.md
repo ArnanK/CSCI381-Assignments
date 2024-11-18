@@ -55,3 +55,55 @@ These values can be modified directly in the login GUI if needed.
    - You can type or load SQL commands from a file.  
    - Click **Execute SQL Commands** to run the commands.  
    - Results (if any) are displayed in a table format.
+
+# README: Installation Instructions for Microsoft JDBC Driver 12.6 for SQL Server
+
+## **Introduction**
+This document provides step-by-step instructions for unpacking, installing, and integrating the Microsoft JDBC Driver 12.6 for SQL Server in your Java project. This includes adding the driver to your Java project in Eclipse for use in `BIClass.java`.
+
+Downloading and using the Microsoft JDBC Driver signifies acceptance of the terms in the `license.txt` file. Please review the license before proceeding.
+
+---
+
+## **Installation for Windows**
+
+1. **Review the License**:
+   - Read the `license.txt` file included with the download.
+
+2. **Download the Driver**:
+   - Download the `sqljdbc_<version>_enu.zip` file to a temporary directory.
+
+3. **Extract the Driver**:
+   - Unpack the `.zip` file by right-clicking it and selecting **Extract All** or using a file extraction tool.
+
+4. **Specify Extract Directory**:
+   - Enter the directory where you want to extract the driver. The recommended location is `%ProgramFiles%` (e.g., `C:\Program Files`), using the default folder name:  
+     ```
+     Microsoft JDBC Driver 12.6 for SQL Server
+     ```
+     ---
+
+## **Adding JDBC Driver to Your Java Project**
+
+To use the extracted JDBC driver in your `BIClass.java` file within Eclipse:
+
+1. **Open Eclipse**:
+   - Launch Eclipse and open your project containing the `BIClass.java` file.
+
+2. **Right-Click on the Project**:
+   - In the **Package Explorer**, right-click on your project.
+
+3. **Navigate to Properties**:
+   - Select **Properties** from the context menu.
+
+4. **Go to the Build Path Section**:
+   - In the Properties window, click on **Java Build Path** (or **Build Path** depending on your Eclipse version).
+
+5. **Add the JDBC Driver**:
+   - Switch to the **Libraries** tab.
+   - Click **Add External JARs**.
+   - Browse to the directory where you extracted the JDBC driver.
+   - Select the `.jar` file you want to use (e.g., `sqljdbc42.jar` or `sqljdbc41.jar`) and click **Open**.
+
+6. **Apply and Close**:
+   - Click **Apply and Close** to save the changes.
