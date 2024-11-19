@@ -1,7 +1,9 @@
 -- =============================================
 -- Author: Inderpreet Singh
 -- Create date: 11/16/2024
--- Description:	Reset Sequence Objects to Lowest Key
+-- Description: 
+-- Loads data from the source table ([FileUpload].[OriginallyLoadedData]) 
+-- into the Star Schema, including dimension and fact tables.
 -- =============================================
 
 DROP PROCEDURE IF EXISTS [Project2].[LoadStarSchema];
