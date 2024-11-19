@@ -19,7 +19,6 @@ BEGIN
     -- Insert data into Fact.Data table
     INSERT INTO [CH01-01-Fact].[Data]
     (
-        SalesKey,
         SalesManagerKey,
         OccupationKey,
         TerritoryKey,
@@ -46,10 +45,10 @@ BEGIN
         Occupation,
         TerritoryRegion,
         TerritoryCountry,
-        TerritoryGroup
+        TerritoryGroup,
+        UserAuthorizationKey
     )
     SELECT
-        NEXT VALUE FOR [Project2].[DataSequenceKey],
         SM.SalesManagerKey,
         DO.OccupationKey,
         DT.TerritoryKey,
@@ -76,7 +75,8 @@ BEGIN
         OLD.Occupation,
         OLD.TerritoryRegion,
         OLD.TerritoryCountry,
-        OLD.TerritoryGroup
+        OLD.TerritoryGroup,
+        @UserAuthorizationKey
     FROM FileUpload.OriginallyLoadedData AS OLD
     INNER JOIN [CH01-01-Dimension].[SalesManagers] AS SM
         ON SM.SalesManager = OLD.SalesManager
@@ -97,7 +97,7 @@ BEGIN
     -- Track workflow for the operation
     EXEC [Process].[usp_TrackWorkFlow]
         @WorkFlowStepDescription = 'Loaded all data into Fact.Data table',
-        @GroupMemberUserAuthorizationKey = @UserAuthorizationKey,
+        @UserAuthorizationKey = @UserAuthorizationKey,
         @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
 END
 GO

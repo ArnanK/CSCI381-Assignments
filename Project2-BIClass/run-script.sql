@@ -58,6 +58,7 @@ BEGIN
 
 END;
 GO
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -154,7 +155,6 @@ BEGIN
 
 END;
 GO
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -222,7 +222,6 @@ END;
 
 
 GO
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -272,7 +271,6 @@ BEGIN
         @WorkFlowStepTableRowCount = -1;
 END
 GO
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -306,6 +304,7 @@ BEGIN
         @WorkFlowStepTableRowCount = -1;
 END
 GO
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -356,6 +355,8 @@ BEGIN
 END
 GO
 
+-- EXEC [Project2].[TruncateStarSchemaData] @UserAuthorizationKey = 1
+
 
 
 -- =============================================
@@ -386,7 +387,6 @@ BEGIN
     VALUES(@WorkFlowStepDescription, @UserAuthorizationKey, @WorkFlowStepTableRowCount);
 END
 GO
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -400,7 +400,6 @@ GO
 --
 -- =============================================
 CREATE OR ALTER PROCEDURE [Project2].[sp_AddColumns]
-
 AS
 BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -452,9 +451,6 @@ END;
 
 
 GO
-
-
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -468,7 +464,6 @@ GO
 --
 -- =============================================
 CREATE OR ALTER PROCEDURE [Project2].[sp_AddGroupMembers]
-
 AS
 BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -503,7 +498,6 @@ GO
 --
 -- =============================================
 CREATE OR ALTER PROCEDURE [Project2].[sp_CreateSO]
-
 AS
 BEGIN
     
@@ -755,7 +749,8 @@ END;
 GO
 
 
-exec [Project2].[sp_InitSetup]
+EXEC [Project2].[sp_InitSetup]
+
 
 SET ANSI_NULLS ON
 GO
@@ -763,405 +758,101 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- =============================================
--- Author:      Inderpreet Singh
--- Create date: 11/17/2024
--- Description: Loads data into the SalesManagers table.
+-- Author: Dillon Chen/Debugged by: Inderpreet Singh
+-- Create date: 11/18/2024
+-- Description: Inserts all data into one Fact.Data table.
 -- =============================================
-DROP PROCEDURE IF EXISTS [Project2].[Load_SalesManagers]
-GO
-CREATE PROCEDURE [Project2].[Load_SalesManagers]
+CREATE OR ALTER PROCEDURE [Project2].[Load_Data]
     @UserAuthorizationKey INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+    DECLARE @WorkFlowStepTableRowCount INT;
 
-    INSERT INTO [CH01-01-Dimension].[SalesManagers] (
-        Category,
-        SalesManager,
-        Office,
-        UserAuthorizationKey
-    )
-    SELECT DISTINCT
-        ProductCategory, -- Adjust this according to the data
-        SalesManager,
-        CASE
-            WHEN SalesManager LIKE N'Maurizio%' OR SalesManager LIKE N'Marco%' THEN 'Redmond'
-            WHEN SalesManager LIKE N'Alberto%' OR SalesManager LIKE N'Luis%' THEN 'Seattle'
-            ELSE 'Seattle'
-        END AS Office,
-        @UserAuthorizationKey
-    FROM (
-        SELECT DISTINCT ProductCategory, SalesManager
-        FROM [FileUpload].OriginallyLoadedData
-    ) AS S;
-
-    SET @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assigning a value to the variable
-
-    EXEC [Process].[usp_TrackWorkFlow] 
-        @UserAuthorizationKey = @UserAuthorizationKey,
-        @WorkFlowStepDescription = 'Loading data into the SalesManager Table',
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Calling the stored procedure
-
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:      Nafisul Islam
--- Create date: 11/17/2024
--- Description: Loads data into the DimTerritory table.
--- =============================================
-
-DROP PROCEDURE IF EXISTS [Project2].[Load_DimTerritory]
-GO
-CREATE PROCEDURE [Project2].[Load_DimTerritory]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
-
-    INSERT INTO [CH01-01-Dimension].[DimTerritory] (
-        TerritoryGroup,
-        TerritoryCountry,
-        TerritoryRegion,
-        UserAuthorizationKey
-    )
-    SELECT
-        TerritoryGroup,
-        TerritoryCountry,
-        TerritoryRegion,
-        @UserAuthorizationKey
-    FROM (
-        SELECT DISTINCT 
-            TerritoryGroup, 
-            TerritoryCountry, 
-            TerritoryRegion
-        FROM [FileUpload].OriginallyLoadedData
-    ) AS T;
-
-    -- Assigning a value to the variable
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-
-    EXEC [Process].[usp_TrackWorkFlow] 
-        @WorkFlowStepDescription = 'Loading data into the DimTerritory Table',
-        @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
-
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
--- =============================================
--- Author:    Nafisul Islam, debugged by:Inderpreet Singh
--- Create date: 11/17/2024
--- Description: Loads data into the DimProductSubcategory table.
--- =============================================
-CREATE OR ALTER PROCEDURE [Project2].[Load_DimProductSubcategory]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
-    
-    -- Insert the data from the FileUpload
-    INSERT INTO [CH01-01-Dimension].[DimProductSubcategory] (
-        ProductSubcategory,
-        ProductCategoryKey,
-        UserAuthorizationKey
-    )
-    SELECT DISTINCT
-        OLD.ProductSubcategory,
-        OLD.ProductCategoryKey,
-        @UserAuthorizationKey
-    FROM (
-        SELECT DISTINCT d.ProductSubcategory, c.ProductCategoryKey
-        FROM [FileUpload].OriginallyLoadedData d
-        INNER JOIN [CH01-01-Dimension].DimProductCategory c ON d.ProductCategory = c.ProductCategory      
-    ) AS OLD;
-
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-
-    EXEC [Process].[usp_TrackWorkFlow] 
-        @WorkFlowStepDescription = 'Loading data into the DimProductSubcategory Table',
-        @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
-
-END;
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:      Nafisul Islam
--- Create date: 11/17/2024
--- Description: Loads data into the DimProductCategory table.
--- =============================================
-ALTER PROCEDURE [Project2].[Load_DimProductCategory]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
-
-
-    -- Insert data into DimProductCategory table
-    INSERT INTO [CH01-01-Dimension].[DimProductCategory] (
+    -- Insert data into Fact.Data table
+    INSERT INTO [CH01-01-Fact].[Data]
+    (
+        SalesManagerKey,
+        OccupationKey,
+        TerritoryKey,
+        ProductKey,
+        CustomerKey,
         ProductCategory,
-        UserAuthorizationKey
-    )
-    SELECT DISTINCT
-        new.ProductCategory,
-        @UserAuthorizationKey
-    FROM (
-
-        SELECT DISTINCT
-            old.ProductCategory
-            FROM [FileUpload].OriginallyLoadedData AS old 
-        )AS new;
-
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-    EXEC [Process].[usp_TrackWorkFlow] 
-        @WorkFlowStepDescription = 'Loading data into the DimProductSubcategory Table',
-        @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
-
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:      Nafisul Islam
--- Create date: 11/17/2024
--- Description: Loads data into the DimProduct table.
--- =============================================
-ALTER PROCEDURE [Project2].[Load_DimProduct]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
-
-    -- Insert data into DimProduct table
-    INSERT INTO [CH01-01-Dimension].[DimProduct] (
-        ProductSubcategoryKey,
-        ProductCategory,
+        SalesManager,
         ProductSubcategory,
         ProductCode,
         ProductName,
         Color,
         ModelName,
-        UserAuthorizationKey
-    )
-    SELECT DISTINCT
-        new.ProductSubcategoryKey,
-        new.ProductCategory,
-        new.ProductSubcategory,
-        new.ProductCode,
-        new.ProductName,
-        new.Color,
-        new.ModelName,
-        @UserAuthorizationKey
-    FROM (
-        SELECT DISTINCT
-            dps.ProductSubcategoryKey,
-            dpc.ProductCategory,
-            dps.ProductSubcategory,
-            ProductCode,
-            ProductName,
-            Color,
-            ModelName
-        FROM [FileUpload].OriginallyLoadedData AS old
-        INNER JOIN [CH01-01-Dimension].[DimProductCategory] AS dpc ON old.ProductCategory = dpc.ProductCategory
-        INNER JOIN [CH01-01-Dimension].[DimProductSubcategory] as dps ON old.ProductSubcategory = dps.ProductSubcategory
-    ) AS new;
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-    EXEC [Process].[usp_TrackWorkFlow] 
-        @WorkFlowStepDescription = 'Loading data into the DimProduct Table',
-        @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
-
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:	Dillon Chen
--- Create date: 11/17/2024
--- Description:	Recreates DimOrderDate table.
--- =============================================
-IF NOT EXISTS (
-	SELECT 1
-	FROM INFORMATION_SCHEMA.COLUMNS
-	WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
-	    AND TABLE_NAME = 'DimOrderDate'
-	   AND COLUMN_NAME = 'UserAuthorizationKey'
-)
-BEGIN
-    ALTER TABLE [CH01-01-Dimension].[DimOrderDate]
-    ADD [UserAuthorizationKey] INT NULL;
-END;
-
-DROP PROCEDURE IF EXISTS [Project2].[Load_DimOrderDate];
-GO
-CREATE PROCEDURE [Project2].[Load_DimOrderDate]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    DECLARE @WorkFlowStepTableRowCount INT;
-    INSERT INTO [CH01-01-Dimension].[DimOrderDate] (
-	    OrderDate,
-	    MonthName,
-	    MonthNumber,
-	    [Year],
-	    UserAuthorizationKey
-    )
-    SELECT DISTINCT
+        OrderQuantity,
+        UnitPrice,
+        ProductStandardCost,
+        SalesAmount,
         OrderDate,
         MonthName,
-        MonthNumber,
         [Year],
-        @UserAuthorizationKey
-    FROM [FileUpload].OriginallyLoadedData;
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-    EXEC Process.usp_TrackWorkFlow 
-        @WorkFlowStepDescription = 'Loading OrderDate data into DimOrderDate table', 
-        @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @@ROWCOUNT;
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:	Dillon Chen
--- Create date: 11/16/2024
--- Description:	Recreates the DimOccupation table with a Sequence Object as a key.
--- =============================================
-IF NOT EXISTS (
-	SELECT 1
-	FROM INFORMATION_SCHEMA.COLUMNS
-	WHERE TABLE_SCHEMA = 'CH01-01-Dimension'
-	    AND TABLE_NAME = 'DimOccupation'
-	   AND COLUMN_NAME = 'UserAuthorizationKey'
-)
-BEGIN
-    ALTER TABLE [CH01-01-Dimension].[DimOccupation]
-    ADD [UserAuthorizationKey] INT NULL;
-END;
-
-DROP PROCEDURE IF EXISTS [Project2].[Load_DimOccupation];
-GO
-CREATE PROCEDURE [Project2].[Load_DimOccupation]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    DECLARE @WorkFlowStepTableRowCount INT;
-    INSERT INTO [CH01-01-Dimension].[DimOccupation] (
-	    Occupation,
-	    UserAuthorizationKey
-    )
-    SELECT
-        O.Occupation,
-        @UserAuthorizationKey
-    FROM (
-	SELECT DISTINCT Occupation
-        FROM FileUpload.OriginallyLoadedData
-    ) AS O;
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-    EXEC [Process].[usp_TrackWorkFlow]
-        @WorkFlowStepDescription = 'Loading data into the DimOccupation Table', 
-        @UserAuthorizationKey = @UserAuthorizationKey, 
-        @WorkFlowStepTableRowCount = @@ROWCOUNT;
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:	Dillon Chen
--- Create date: 11/16/2024
--- Description:	Provides the full descriptive name of the marital status character.
--- =============================================
-DROP PROCEDURE IF EXISTS [Project2].[Load_DimMaritalStatus];
-GO
-CREATE PROCEDURE [Project2].[Load_DimMaritalStatus]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    DECLARE @WorkFlowStepTableRowCount INT;
-    INSERT INTO [CH01-01-Dimension].[DimMaritalStatus] (
-		MaritalStatus,
-		MaritalStatusDescription,
-		UserAuthorizationKey
-    )
-    SELECT DISTINCT 
-	OLD.MaritalStatus,
-	CASE
-            WHEN OLD.MaritalStatus = 'M' THEN 'Married'
-            WHEN OLD.MaritalStatus = 'S' THEN 'Single'
-        END AS MaritalStatusDescription,
-        @UserAuthorizationKey
-    FROM FileUpload.OriginallyLoadedData AS OLD;
-    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
-    EXEC [Process].[usp_TrackWorkFlow]
-		@WorkFlowStepDescription =  'Loading Data into the DimMaritalStatus Table',
-		@UserAuthorizationKey = @UserAuthorizationKey,
-		@WorkFlowStepTableRowCount = @@ROWCOUNT;
-
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:      Dillon Chen
--- Create date: 11/16/2024
--- Description:	Provides the full descriptive name of the gender character.
--- =============================================
-DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
-GO
-
-CREATE PROCEDURE [Project2].[Load_DimGender]
-    @UserAuthorizationKey INT
-AS
-BEGIN
-    DECLARE @WorkFlowStepTableRowCount INT;
-    INSERT INTO [CH01-01-Dimension].[DimGender] (
+        CustomerName,
+        MaritalStatus,
         Gender,
-        GenderDescription,
+        Education,
+        Occupation,
+        TerritoryRegion,
+        TerritoryCountry,
+        TerritoryGroup,
         UserAuthorizationKey
     )
-    SELECT DISTINCT OLD.Gender,
-        CASE
-            WHEN OLD.Gender = 'M' THEN 'Male'
-            WHEN OLD.Gender = 'F' THEN 'Female'
-        END AS GenderDescription,
+    SELECT
+        SM.SalesManagerKey,
+        DO.OccupationKey,
+        DT.TerritoryKey,
+        DP.ProductKey,
+        DC.CustomerKey,
+        OLD.ProductCategory,
+        OLD.SalesManager,
+        OLD.ProductSubcategory,
+        OLD.ProductCode,
+        OLD.ProductName,
+        OLD.Color,
+        OLD.ModelName,
+        OLD.OrderQuantity,
+        OLD.UnitPrice,
+        OLD.ProductStandardCost,
+        OLD.SalesAmount,
+        OLD.OrderDate,
+        OLD.MonthName,
+        OLD.[Year],
+        OLD.CustomerName,
+        OLD.MaritalStatus,
+        OLD.Gender,
+        OLD.Education,
+        OLD.Occupation,
+        OLD.TerritoryRegion,
+        OLD.TerritoryCountry,
+        OLD.TerritoryGroup,
         @UserAuthorizationKey
-    FROM FileUpload.OriginallyLoadedData AS OLD;
+    FROM FileUpload.OriginallyLoadedData AS OLD
+    INNER JOIN [CH01-01-Dimension].[SalesManagers] AS SM
+        ON SM.SalesManager = OLD.SalesManager
+    INNER JOIN [CH01-01-Dimension].[DimOccupation] AS DO
+        ON DO.Occupation = OLD.Occupation
+    INNER JOIN [CH01-01-Dimension].[DimTerritory] AS DT
+        ON DT.TerritoryGroup = OLD.TerritoryGroup
+        AND DT.TerritoryCountry = OLD.TerritoryCountry
+        AND DT.TerritoryRegion = OLD.TerritoryRegion
+    INNER JOIN [CH01-01-Dimension].[DimProduct] AS DP
+        ON DP.ProductName = OLD.ProductName
+    INNER JOIN [CH01-01-Dimension].[DimCustomer] AS DC
+        ON DC.CustomerName = OLD.CustomerName;
+
+    -- Get the row count
     SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    -- Track workflow for the operation
     EXEC [Process].[usp_TrackWorkFlow]
-        @WorkFlowStepDescription = 'Loading Gender data into Gender Table',
+        @WorkFlowStepDescription = 'Loaded all data into Fact.Data table',
         @UserAuthorizationKey = @UserAuthorizationKey,
-        @WorkFlowStepTableRowCount = @@ROWCOUNT;
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
 END
 GO
 SET ANSI_NULLS ON
@@ -1218,6 +909,471 @@ BEGIN
 END
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Dillon Chen
+-- Create date: 11/16/2024
+-- Description:	Provides the full descriptive name of the gender character.
+-- =============================================
+DROP PROCEDURE IF EXISTS [Project2].[Load_DimGender];
+GO
 
+CREATE PROCEDURE [Project2].[Load_DimGender]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    DECLARE @WorkFlowStepTableRowCount INT;
+    INSERT INTO [CH01-01-Dimension].[DimGender] (
+        Gender,
+        GenderDescription,
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT OLD.Gender,
+        CASE
+            WHEN OLD.Gender = 'M' THEN 'Male'
+            WHEN OLD.Gender = 'F' THEN 'Female'
+        END AS GenderDescription,
+        @UserAuthorizationKey
+    FROM FileUpload.OriginallyLoadedData AS OLD;
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Loading Gender data into Gender Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = @@ROWCOUNT;
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:	Dillon Chen
+-- Create date: 11/16/2024
+-- Description:	Provides the full descriptive name of the marital status character.
+-- =============================================
+DROP PROCEDURE IF EXISTS [Project2].[Load_DimMaritalStatus];
+GO
+CREATE PROCEDURE [Project2].[Load_DimMaritalStatus]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    DECLARE @WorkFlowStepTableRowCount INT;
+    INSERT INTO [CH01-01-Dimension].[DimMaritalStatus] (
+		MaritalStatus,
+		MaritalStatusDescription,
+		UserAuthorizationKey
+    )
+    SELECT DISTINCT 
+	OLD.MaritalStatus,
+	CASE
+            WHEN OLD.MaritalStatus = 'M' THEN 'Married'
+            WHEN OLD.MaritalStatus = 'S' THEN 'Single'
+        END AS MaritalStatusDescription,
+        @UserAuthorizationKey
+    FROM FileUpload.OriginallyLoadedData AS OLD;
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+    EXEC [Process].[usp_TrackWorkFlow]
+		@WorkFlowStepDescription =  'Loading Data into the DimMaritalStatus Table',
+		@UserAuthorizationKey = @UserAuthorizationKey,
+		@WorkFlowStepTableRowCount = @@ROWCOUNT;
 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
+-- =============================================
+-- Author:	Dillon Chen/Debugged by: Inderpreet Singh
+-- Create date: 11/16/2024
+-- Description:	Recreates the DimOccupation table with a Sequence Object as a key.
+-- =============================================
+-- Drop and recreate the procedure
+DROP PROCEDURE IF EXISTS [Project2].[Load_DimOccupation];
+GO
+CREATE PROCEDURE [Project2].[Load_DimOccupation]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT;
+
+    -- Insert data into DimOccupation table
+    INSERT INTO [CH01-01-Dimension].[DimOccupation] (
+        Occupation,
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT
+        O.Occupation,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT Occupation
+        FROM [FileUpload].[OriginallyLoadedData]
+    ) AS O;
+
+    -- Get the row count of inserted rows
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    -- Track the workflow step
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Loading data into the DimOccupation Table', 
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:	Dillon Chen/ Debugged by: Inderpreet Singh
+-- Create date: 11/17/2024
+-- Description:	Recreates DimOrderDate table if missing and updates procedure.
+-- =============================================
+-- Drop and recreate the procedure
+DROP PROCEDURE IF EXISTS [Project2].[Load_DimOrderDate];
+GO
+CREATE PROCEDURE [Project2].[Load_DimOrderDate]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT;
+
+    -- Insert data into DimOrderDate table
+    INSERT INTO [CH01-01-Dimension].[DimOrderDate] (
+        OrderDate,
+        MonthName,
+        MonthNumber,
+        [Year],
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT
+        OrderDate,
+        MonthName,
+        MonthNumber,
+        [Year],
+        @UserAuthorizationKey
+    FROM [FileUpload].OriginallyLoadedData;
+
+    -- Get the row count of inserted rows
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    -- Track the workflow step
+    EXEC Process.usp_TrackWorkFlow 
+        @WorkFlowStepDescription = 'Loading OrderDate data into DimOrderDate table', 
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:      Nafisul Islam Debugged by: Inderpreet Singh
+-- Create date: 11/17/2024
+-- Description: Loads data into the DimProduct table.
+-- =============================================
+CREATE OR ALTER PROCEDURE [Project2].[Load_DimProduct]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+
+    -- Insert data into DimProduct table
+    INSERT INTO [CH01-01-Dimension].[DimProduct] (
+        ProductSubcategoryKey,
+        ProductCategory,
+        ProductSubcategory,
+        ProductCode,
+        ProductName,
+        Color,
+        ModelName,
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT
+        new.ProductSubcategoryKey,
+        new.ProductCategory,
+        new.ProductSubcategory,
+        new.ProductCode,
+        new.ProductName,
+        new.Color,
+        new.ModelName,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT
+            dps.ProductSubcategoryKey,
+            dpc.ProductCategory,
+            dps.ProductSubcategory,
+            old.ProductCode,
+            old.ProductName,
+            old.Color,
+            old.ModelName
+        FROM [FileUpload].OriginallyLoadedData AS old
+        INNER JOIN [CH01-01-Dimension].[DimProductCategory] AS dpc 
+            ON old.ProductCategory = dpc.ProductCategory
+        INNER JOIN [CH01-01-Dimension].[DimProductSubcategory] AS dps 
+            ON old.ProductSubcategory = dps.ProductSubcategory
+    ) AS new;
+
+    -- Record the number of rows inserted
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    -- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @WorkFlowStepDescription = 'Loading data into the DimProduct Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
+
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:      Nafisul Islam debugged by : Inderpreet Singh
+-- Create date: 11/17/2024
+-- Description: Loads data into the DimProductCategory table.
+-- =============================================
+CREATE OR ALTER PROCEDURE [Project2].[Load_DimProductCategory]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+
+    -- Insert data into DimProductCategory table
+    INSERT INTO [CH01-01-Dimension].[DimProductCategory] (
+        ProductCategory,
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT
+        new.ProductCategory,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT
+            old.ProductCategory
+        FROM [FileUpload].OriginallyLoadedData AS old 
+    ) AS new;
+
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @WorkFlowStepDescription = 'Loading data into the DimProductCategory Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
+
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:    Nafisul Islam, debugged by:Inderpreet Singh
+-- Create date: 11/17/2024
+-- Description: Loads data into the DimProductSubcategory table.
+-- =============================================
+CREATE OR ALTER PROCEDURE [Project2].[Load_DimProductSubcategory]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+    
+    -- Insert the data from the FileUpload
+    INSERT INTO [CH01-01-Dimension].[DimProductSubcategory] (
+        ProductSubcategory,
+        ProductCategoryKey,
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT
+        OLD.ProductSubcategory,
+        OLD.ProductCategoryKey,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT d.ProductSubcategory, c.ProductCategoryKey
+        FROM [FileUpload].OriginallyLoadedData d
+        INNER JOIN [CH01-01-Dimension].DimProductCategory c ON d.ProductCategory = c.ProductCategory      
+    ) AS OLD;
+
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @WorkFlowStepDescription = 'Loading data into the DimProductSubcategory Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount;
+
+END;
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Nafisul Islam
+-- Create date: 11/17/2024
+-- Description: Loads data into the DimTerritory table.
+-- =============================================
+
+DROP PROCEDURE IF EXISTS [Project2].[Load_DimTerritory]
+GO
+CREATE PROCEDURE [Project2].[Load_DimTerritory]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+
+    INSERT INTO [CH01-01-Dimension].[DimTerritory] (
+        TerritoryGroup,
+        TerritoryCountry,
+        TerritoryRegion,
+        UserAuthorizationKey
+    )
+    SELECT
+        TerritoryGroup,
+        TerritoryCountry,
+        TerritoryRegion,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT 
+            TerritoryGroup, 
+            TerritoryCountry, 
+            TerritoryRegion
+        FROM [FileUpload].OriginallyLoadedData
+    ) AS T;
+
+    -- Assigning a value to the variable
+    SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
+
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @WorkFlowStepDescription = 'Loading data into the DimTerritory Table',
+        @UserAuthorizationKey = @UserAuthorizationKey, 
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Use the variable in EXEC statement
+
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:      Inderpreet Singh
+-- Create date: 11/17/2024
+-- Description: Loads data into the SalesManagers table.
+-- =============================================
+DROP PROCEDURE IF EXISTS [Project2].[Load_SalesManagers]
+GO
+CREATE PROCEDURE [Project2].[Load_SalesManagers]
+    @UserAuthorizationKey INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @WorkFlowStepTableRowCount INT; -- Declaring the variable
+
+    INSERT INTO [CH01-01-Dimension].[SalesManagers] (
+        Category,
+        SalesManager,
+        Office,
+        UserAuthorizationKey
+    )
+    SELECT DISTINCT
+        ProductCategory, -- Adjust this according to the data
+        SalesManager,
+        CASE
+            WHEN SalesManager LIKE N'Maurizio%' OR SalesManager LIKE N'Marco%' THEN 'Redmond'
+            WHEN SalesManager LIKE N'Alberto%' OR SalesManager LIKE N'Luis%' THEN 'Seattle'
+            ELSE 'Seattle'
+        END AS Office,
+        @UserAuthorizationKey
+    FROM (
+        SELECT DISTINCT ProductCategory, SalesManager
+        FROM [FileUpload].OriginallyLoadedData
+    ) AS S;
+
+    SET @WorkFlowStepTableRowCount = @@ROWCOUNT; -- Assigning a value to the variable
+
+    EXEC [Process].[usp_TrackWorkFlow] 
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepDescription = 'Loading data into the SalesManager Table',
+        @WorkFlowStepTableRowCount = @WorkFlowStepTableRowCount; -- Calling the stored procedure
+
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		YourName
+-- Create date: 
+-- Description:	
+-- =============================================
+ALTER PROCEDURE [Project2].[LoadStarSchemaData]
+    -- Add the parameters for the stored procedure here
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    --
+    --	Drop All of the foreign keys prior to truncating tables in the star schema
+ 	--
+    EXEC  [Project2].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 1;
+    --
+    --	Check row count before truncation
+    EXEC	[Project2].[ShowTableStatusRowCount]
+      @UserAuthorizationKey = 3,  -- Change -1 to the appropriate UserAuthorizationKey
+      @TableStatus = N'''Pre-truncate of tables'''
+      --
+      --	Always truncate the Star Schema Data
+    --
+    EXEC  [Project2].[TruncateStarSchemaData] @UserAuthorizationKey = 1; 
+    --
+    --	Load the star schema
+    --
+    EXEC  [Project2].[Load_DimProductCategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimProductSubcategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimProduct] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_SalesManagers] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimGender] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimMaritalStatus] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimOccupation] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimOrderDate] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimTerritory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimCustomer] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_Data] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+  --
+    --	Recreate all of the foreign keys prior after loading the star schema
+    --
+ 	--
+	--	Check row count before truncation
+	EXEC	[Project2].[ShowTableStatusRowCount]
+		@UserAuthorizationKey = 3,  -- Change -1 to the appropriate UserAuthorizationKey
+		@TableStatus = N'''Row Count after loading the star schema'''
+	--
+   EXEC [Project2].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
+    --
+END;
+GO
+
+EXEC [Project2].[LoadStarSchemaData]

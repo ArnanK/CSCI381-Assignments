@@ -32,14 +32,14 @@ BEGIN
     EXEC  [Project2].[Load_DimProductCategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimProductSubcategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimProduct] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_SalesManagers] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_SalesManagers] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimGender] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimMaritalStatus] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimOccupation] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimOrderDate] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimTerritory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimCustomer] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_Data] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_Data] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
   --
     --	Recreate all of the foreign keys prior after loading the star schema
     --
@@ -53,3 +53,6 @@ BEGIN
     --
 END;
 GO
+
+SELECT * 
+FROM DbSecurity.UserAuthorization
