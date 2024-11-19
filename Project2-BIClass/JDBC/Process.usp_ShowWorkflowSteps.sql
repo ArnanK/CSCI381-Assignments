@@ -1,7 +1,9 @@
 -- =============================================
 -- Author: Inderpreet Singh
 -- Create date: 11/16/2024
--- Description:	Reset Sequence Objects to Lowest Key
+-- Description: 
+-- Retrieves and displays the workflow steps from the [Process].[WorkflowSteps] table,
+-- ordered by the starting date and time.
 -- =============================================
 
 DROP PROCEDURE IF EXISTS [Process].[usp_ShowWorkflowSteps];
