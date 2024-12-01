@@ -1,20 +1,17 @@
 //Inderpreet Singh
-//CSCI-381 
+//CSCI-381
 //Project #2
+//GUI
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class BIClass {
@@ -27,9 +24,7 @@ public class BIClass {
     private JTextArea sqlCommandsArea, resultsArea;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new BIClass().createAndShowLoginGUI();
-        });
+        SwingUtilities.invokeLater(() -> new BIClass().createAndShowLoginGUI());
     }
 
     private void createAndShowLoginGUI() {
@@ -61,12 +56,7 @@ public class BIClass {
         panel.add(passwordField);
 
         JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                attemptLogin();
-            }
-        });
+        loginButton.addActionListener(e -> attemptLogin());
         panel.add(loginButton);
 
         loginFrame.getContentPane().add(BorderLayout.CENTER, panel);
@@ -81,8 +71,11 @@ public class BIClass {
         char[] passwordChars = passwordField.getPassword();
         String password = new String(passwordChars);
 
-        String connectionUrl = "jdbc:sqlserver://" + serverName + ":" + portNumber + ";" + "databaseName="
-                + databaseName + ";username=" + username + ";password=" + password + ";encrypt=true;trustServerCertificate=true";
+        String connectionUrl = "jdbc:sqlserver://" + serverName + ":" + portNumber + ";" +
+                                "databaseName=" + databaseName + ";" +
+                                "user=" + username + ";" +
+                                "password=" + password + ";" +
+                                "encrypt=true;trustServerCertificate=true";
 
         try {
             connection = DriverManager.getConnection(connectionUrl);
@@ -111,21 +104,11 @@ public class BIClass {
         panel.add(resultsScrollPane, BorderLayout.CENTER);
 
         JButton executeButton = new JButton("Execute SQL Commands");
-        executeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                executeSQLCommands();
-            }
-        });
+        executeButton.addActionListener(e -> executeSQLCommands());
         panel.add(executeButton, BorderLayout.SOUTH);
 
         JButton selectFileButton = new JButton("Select File");
-        selectFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selectSQLFile();
-            }
-        });
+        selectFileButton.addActionListener(e -> selectSQLFile());
         panel.add(selectFileButton, BorderLayout.NORTH);
 
         commandFrame.getContentPane().add(BorderLayout.CENTER, panel);
@@ -161,48 +144,35 @@ public class BIClass {
             String[] commands = sqlCommands.split("(?i)\\bGO\\b");
 
             for (String command : commands) {
-                // Trim leading and trailing whitespaces
                 command = command.trim();
 
-                // Skip empty commands
                 if (command.isEmpty()) {
                     continue;
                 }
 
-                // Display the SQL command in the GUI
+                long startTime = System.currentTimeMillis(); // Start timing execution
                 resultsArea.append("Executing: " + command + "\n");
 
                 try {
-                    // Execute the SQL command
                     boolean hasResults = stmt.execute(command);
 
-                    // Display results if there are any
                     if (hasResults) {
+                        // If the command returns a ResultSet, display it in a JTable
                         try (ResultSet rs = stmt.getResultSet()) {
-                            ResultSetMetaData metaData = rs.getMetaData();
-                            int columnCount = metaData.getColumnCount();
-                            String[] columnNames = new String[columnCount];
-
-                            for (int i = 0; i < columnCount; i++) {
-                                columnNames[i] = metaData.getColumnLabel(i + 1);
+                            if (rs != null && rs.isBeforeFirst()) { // Check if the ResultSet is not empty
+                                displayResultsInTable(rs);
+                            } else {
+                                resultsArea.append("Query executed, but no results to display.\n");
                             }
-
-                            ArrayList<Object[]> rows = new ArrayList<>();
-                            while (rs.next()) {
-                                Object[] row = new Object[columnCount];
-                                for (int i = 0; i < columnCount; i++) {
-                                    row[i] = rs.getObject(i + 1);
-                                }
-                                rows.add(row);
-                            }
-
-                            JTable table = new JTable(rows.toArray(new Object[0][]), columnNames);
-                            JScrollPane scrollPane = new JScrollPane(table);
-                            JOptionPane.showMessageDialog(commandFrame, scrollPane, "Results", JOptionPane.PLAIN_MESSAGE);
                         }
                     } else {
+                        // Handle non-ResultSet commands like INSERT, UPDATE, DELETE, or DDL
                         int updateCount = stmt.getUpdateCount();
-                        resultsArea.append("Update count: " + updateCount + "\n");
+                        long executionTime = System.currentTimeMillis() - startTime; // Calculate execution time
+                        resultsArea.append("Command executed successfully.\n");
+                        JOptionPane.showMessageDialog(commandFrame, "Command executed successfully!\n" +
+                                "Rows affected: " + updateCount + "\n" +
+                                "Execution time: " + executionTime + " ms", "Execution Result", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (Exception innerEx) {
                     resultsArea.append("Error executing command: " + innerEx.getMessage() + "\n");
@@ -213,5 +183,42 @@ public class BIClass {
             JOptionPane.showMessageDialog(commandFrame, "Error executing SQL commands.", "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
+    }
+
+    private void displayResultsInTable(ResultSet rs) throws Exception {
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        // Extract column names
+        String[] columnNames = new String[columnCount];
+        for (int i = 0; i < columnCount; i++) {
+            columnNames[i] = metaData.getColumnLabel(i + 1);
+        }
+
+        // Extract data rows
+        ArrayList<Object[]> data = new ArrayList<>();
+        while (rs.next()) {
+            Object[] row = new Object[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                row[i] = rs.getObject(i + 1);
+            }
+            data.add(row);
+        }
+
+        // If no rows, inform the user
+        if (data.isEmpty()) {
+            JOptionPane.showMessageDialog(commandFrame, "Query executed, but no data found.", "Information", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Create and display JTable
+        JTable table = new JTable(new DefaultTableModel(data.toArray(new Object[0][]), columnNames));
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        JDialog tableDialog = new JDialog(commandFrame, "Query Results", true);
+        tableDialog.getContentPane().add(scrollPane);
+        tableDialog.setSize(800, 400);
+        tableDialog.setLocationRelativeTo(commandFrame);
+        tableDialog.setVisible(true);
     }
 }

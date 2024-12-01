@@ -1,5 +1,5 @@
 -- =============================================
--- Author: Luis Diaz
+-- Debugged: Inderpreet Singh
 -- Create date: 11/16/2024
 -- Description: 
 /* 
@@ -8,25 +8,28 @@ that generates integers starting at 1 and increments by 1, likely for tracking
 or numbering workflow steps in a systematic order.
 */
 -- =============================================
-
-
-
-DROP PROCEDURE IF EXISTS [Project2].[usp_WorkFlowStepCounter]
--- This removes any stored procedure named usp_WorkFlowStepCounter in the Project2 schema.
+DROP PROCEDURE IF EXISTS [Process].[usp_ShowWorkflowSteps];
 GO
-CREATE PROCEDURE [Project2].[usp_WorkFlowStepCounter]
--- New stored procedure named usp_WorkFlowStepCounter
+
+CREATE PROCEDURE [Process].[usp_ShowWorkflowSteps]
 AS
 BEGIN
-    CREATE SEQUENCE Process.WorkFlowStepTableRowCountBy1
-        AS INT
-        START WITH 1
-        INCREMENT BY 1
-END
+    SET NOCOUNT ON;
 
-/*
-Defines a stored procedure that creates a sequence
-for generating auto-incrementing numeric values
-*/
+    -- Retrieve workflow steps
+    SELECT 
+        WorkFlowStepKey AS StepID,
+        WorkFlowStepDescription AS Description,
+        WorkFlowStepTableRowCount AS [RowCount], -- Use square brackets to escape the keyword
+        StartingDateTime AS StartTime,
+        EndingDateTime AS EndTime,
+        UserAuthorizationKey AS UserKey
+    FROM [Process].[WorkflowSteps]
+    ORDER BY StartingDateTime DESC;
+
+    PRINT 'Workflow steps displayed successfully.';
+END;
+GO
+
 
 
