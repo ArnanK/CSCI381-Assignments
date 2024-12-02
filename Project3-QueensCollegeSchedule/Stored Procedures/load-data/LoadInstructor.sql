@@ -19,10 +19,11 @@ BEGIN
 	TRUNCATE TABLE [Project3].[Instructor]
 
 	INSERT INTO [Project3].[Instructor]
-	(InstructorName)
+	(InstructorName, UserAuthorizationKey)
 		(   
 			SELECT DISTINCT
-				C.Instructor AS InstructorName
+				C.Instructor AS InstructorName,
+				@UserAuthorizationKey
 			FROM Uploadfile.CurrentSemesterCourseOfferings AS C
 		)
 	-- EXEC workflowsteps procedure
