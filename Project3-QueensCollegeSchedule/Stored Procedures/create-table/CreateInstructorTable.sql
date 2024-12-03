@@ -20,17 +20,15 @@ BEGIN
 	CREATE TABLE [Project3].[Instructor]
 		(
 			InstructorID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Instructor] DEFAULT (NEXT VALUE FOR [Project3].InstructorID_Seq) PRIMARY KEY,
-			InstructorName [Udt].[P3NameString] NULL,
+			FirstName [Udt].[P3NameString] NULL,
+			LastName [Udt].[P3NameString] NULL,
 			UserAuthorizationKey INT NULL
 		)
 
-	--EXEC trackworkflow procedure using userauthorizationkey
+	-- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create Instructor Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
-
--- EXEC [Project3].[CreateInstructorTable] @UserAuthorizationKey = 0 -- int
--- GO 
-
--- This select statement should produce a 
--- SELECT * 
--- FROM [Project3].[Instructor]

@@ -24,16 +24,15 @@ BEGIN
 			UserAuthorizationKey INT NULL
 		)
 
-	--EXEC trackworkflow procedure using userauthorizationkey
+	-- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create Building Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
 
--- EXEC [Project3].[CreateBuildingTable] @UserAuthorizationKey = 0 -- int
--- GO 
 
--- This select statement should produce a 
--- SELECT * 
--- FROM [Project3].[Building]
 
 
 

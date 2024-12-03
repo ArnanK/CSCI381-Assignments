@@ -108,6 +108,20 @@ BEGIN
     START WITH 1
     INCREMENT BY 1;
 
-    
+
+    DROP SEQUENCE IF EXISTS [Project3].[UserAuthorizationKey_Seq]
+    CREATE SEQUENCE [Project3].[UserAuthorizationKey_Seq]
+    AS [Udt].[P3Key]
+    START WITH 1
+    INCREMENT BY 1;
+
+    DROP SEQUENCE IF EXISTS [Project3].[WorkflowStepsID_Seq]
+    CREATE SEQUENCE [Project3].[WorkflowStepsID_Seq]
+    AS [Udt].[P3Key]
+    START WITH 1
+    INCREMENT BY 1;
+
+
+
 END;
 GO

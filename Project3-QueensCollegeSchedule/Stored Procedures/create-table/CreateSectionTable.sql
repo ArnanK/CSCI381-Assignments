@@ -28,11 +28,11 @@ BEGIN
         UserAuthorizationKey INT NULL
     )
 
-    -- Call the workflow tracking procedure to record table creation
-    -- EXEC [Process].[usp_TrackWorkFlow] @StartTime, 'CreateSectionTable', 0, @UserAuthorizationKey
+-- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create Section Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
 
--- Testing the procedure with an example authorization key
--- EXEC [Project3].[CreateSectionTable] @UserAuthorizationKey = 0
--- SELECT * FROM [Project3].[Section]

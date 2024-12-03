@@ -25,7 +25,12 @@ BEGIN
 			RoomNumber [Udt].[P3Int] NOT NULL,
 			UserAuthorizationID INT NOT NULL
 		)
+
+	-- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create Room Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO 
 
--- EXEC [Project3].[CreateRoom]

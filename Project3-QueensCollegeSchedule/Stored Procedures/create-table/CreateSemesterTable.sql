@@ -20,9 +20,15 @@ AS BEGIN
 -- Create a new table
     CREATE TABLE [Project3].[Semester]
         (
-        SemesterID int NOT NULL CONSTRAINT [Project3SemesterSeq] DEFAULT (NEXT VALUE FOR [Project3].[SemesterID_Seq]),
-        Name VARCHAR(15),
+        SemesterID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Semester] DEFAULT (NEXT VALUE FOR [Project3].[SemesterID_Seq]),
+        [Name] Udt.[P3NameString],
         UserAuthorizationKey int
         );
+
+    -- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create Semester Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO

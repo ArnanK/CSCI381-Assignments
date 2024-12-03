@@ -30,10 +30,10 @@ BEGIN
         UserAuthorizationKey INT NOT NULL,
     )
 
-    -- Call workflow tracking procedure
-    -- EXEC [Process].[usp_TrackWorkFlow] @StartTime, 'CreateRoomBuildingTable', 0, @UserAuthorizationKey
+-- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create RoomBuilding Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
-
-
---EXEC [Project3].[CreateRoomBuildingTable]

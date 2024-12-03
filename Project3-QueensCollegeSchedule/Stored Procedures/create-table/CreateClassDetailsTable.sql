@@ -24,10 +24,14 @@ BEGIN
             [Enrolled] [Udt].[P3Int],
             UserAuthorizationKey INT NOT NULL
         )
-    PRINT 'Hello World'
+    
+    -- Track workflow for the operation
+    EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Create Class Details Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO 
 
---EXEC [Project3].[CreateClassDetails]
 GO
 
