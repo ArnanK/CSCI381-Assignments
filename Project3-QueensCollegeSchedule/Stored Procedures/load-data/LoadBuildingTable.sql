@@ -15,8 +15,6 @@ CREATE PROCEDURE [Project3].[LoadBuildingData]
 	@UserAuthorizationKey INT
 AS 
 BEGIN 
-	
-	TRUNCATE TABLE [Project3].[Building]
 
 	INSERT INTO [Project3].[Building]
 	(BuildingName, UserAuthorizationKey)

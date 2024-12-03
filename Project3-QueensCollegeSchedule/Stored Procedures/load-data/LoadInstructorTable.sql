@@ -16,8 +16,6 @@ CREATE PROCEDURE [Project3].[LoadInstructor]
 AS 
 BEGIN 
 	
-	TRUNCATE TABLE [Project3].[Instructor]
-
 	INSERT INTO [Project3].[Instructor]
 	(InstructorName, UserAuthorizationKey)
 		(   

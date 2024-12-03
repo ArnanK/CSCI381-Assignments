@@ -18,7 +18,6 @@ CREATE PROCEDURE [Project3].[LoadSchedule]
     @UserAuthorizationKey INT 
 AS
 BEGIN
-    TRUNCATE TABLE [Project3].[Schedule]
     INSERT INTO [Project3].[Schedule]
         (
             [time],[day],UserAuthorizationKey

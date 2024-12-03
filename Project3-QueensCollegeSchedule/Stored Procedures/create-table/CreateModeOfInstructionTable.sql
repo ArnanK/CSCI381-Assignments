@@ -19,8 +19,8 @@ BEGIN
 	DROP TABLE IF EXISTS [Project3].[ModeOfInstruction]
 	CREATE TABLE [Project3].[ModeOfInstruction]
 		(
-			ModeID INT NOT NULL CONSTRAINT [DF_ModeID] DEFAULT (NEXT VALUE FOR ModeID_Seq) PRIMARY KEY,
-			ModeName NVARCHAR(MAX) NULL,
+			ModeID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Mode] DEFAULT (NEXT VALUE FOR [Project3].ModeID_Seq) PRIMARY KEY,
+			ModeName [Udt].[P3NameString] NULL,
 			UserAuthorizationKey INT NULL
 		)
 

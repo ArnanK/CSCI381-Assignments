@@ -16,8 +16,6 @@ CREATE PROCEDURE [Project3].[LoadSectionData]
     @UserAuthorizationKey INT
 AS 
 BEGIN 
-    -- Truncate the Section table to remove old data
-    TRUNCATE TABLE [Project3].[Section]
 
     -- Insert distinct data into the Section table
     INSERT INTO [Project3].[Section]

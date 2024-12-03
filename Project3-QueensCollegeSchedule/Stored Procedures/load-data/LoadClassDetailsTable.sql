@@ -19,8 +19,7 @@ CREATE PROCEDURE [Project3].[LoadClassDetails]
     @UserAuthorizationKey INT
 AS
 BEGIN 
-    TRUNCATE TABLE [Project3].[ClassDetails]
-    
+
     INSERT INTO [Project3].[ClassDetails]
         ( 
             Code, [Limit], Enrolled, UserAuthorizationKey

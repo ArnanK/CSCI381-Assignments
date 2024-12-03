@@ -18,7 +18,6 @@ CREATE PROCEDURE [Project3].[LoadRoomBuildingData]
 AS
 BEGIN
     -- Truncate the RoomBuilding table to remove old data
-    TRUNCATE TABLE [Project3].[RoomBuilding]
 
     -- Insert data into RoomBuilding by matching Room and Building
     INSERT INTO [Project3].[RoomBuilding] (RoomID, BuildingID, UserAuthorizationKey)

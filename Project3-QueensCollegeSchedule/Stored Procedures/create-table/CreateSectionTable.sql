@@ -23,8 +23,8 @@ BEGIN
     -- Create the Section table
     CREATE TABLE [Project3].[Section]
     (
-        SectionID INT NOT NULL CONSTRAINT [DF_SectionID] DEFAULT (NEXT VALUE FOR SectionID_Seq) PRIMARY KEY,
-        SectionName NVARCHAR(7) NULL,
+        SectionID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Section] DEFAULT (NEXT VALUE FOR [Project3].SectionID_Seq) PRIMARY KEY,
+        SectionName [Udt].[P3NameString] NULL,
         UserAuthorizationKey INT NULL
     )
 

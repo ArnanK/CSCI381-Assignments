@@ -19,8 +19,8 @@ BEGIN
 	DROP TABLE IF EXISTS [Project3].[Instructor]
 	CREATE TABLE [Project3].[Instructor]
 		(
-			InstructorID INT NOT NULL CONSTRAINT [DF_InstructorID] DEFAULT (NEXT VALUE FOR InstructorID_Seq) PRIMARY KEY,
-			InstructorName NVARCHAR(MAX) NULL,
+			InstructorID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Instructor] DEFAULT (NEXT VALUE FOR [Project3].InstructorID_Seq) PRIMARY KEY,
+			InstructorName [Udt].[P3NameString] NULL,
 			UserAuthorizationKey INT NULL
 		)
 
