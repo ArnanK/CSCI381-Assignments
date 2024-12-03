@@ -17,7 +17,7 @@ AS
 BEGIN 
 	DECLARE @WorkFlowStepTableRowCount INT;
 	INSERT INTO [Project3].[Course]
-	(CourseName, CourseNum, SemesterID, DepartmentID, Credits, Hours, WritingIntensive, UserAuthorizationKey)
+	(CourseName, CourseNum, SemesterID, DepartmentID, Hours, Credits, WritingIntensive, UserAuthorizationKey)
 		(   
 			SELECT DISTINCT
 				SUBSTRING(C1.[Course (hr, crd)], 0, CHARINDEX(' ', C1.[Course (hr, crd)])),
