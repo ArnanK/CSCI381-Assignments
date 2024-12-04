@@ -18,10 +18,8 @@ CREATE PROCEDURE [Project3].[LoadSemesterData]
 AS BEGIN
     DECLARE @RowCount INT;
 
-    -- Truncate the Semester table to remove old data
     TRUNCATE TABLE [Project3].[Semester];
 
-    -- Insert distinct semester data into the Semester table
     INSERT INTO [Project3].[Semester] ([Name], UserAuthorizationKey)
     SELECT DISTINCT
         CASE
