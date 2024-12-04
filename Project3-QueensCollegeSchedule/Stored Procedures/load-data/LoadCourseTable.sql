@@ -27,8 +27,8 @@ BEGIN
                 CAST(SUBSTRING(C1.[Course (hr, crd)], CHARINDEX('(', C1.[Course (hr, crd)])+1, CHARINDEX(',', C1.[Course (hr, crd)]) - CHARINDEX('(', C1.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
                 CAST(SUBSTRING(C1.[Course (hr, crd)], CHARINDEX(',', C1.[Course (hr, crd)])+1, CHARINDEX(')', C1.[Course (hr, crd)]) - CHARINDEX(',', C1.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
                 (CASE
-                    WHEN C1.[Course (hr, crd)] LIKE N'%[0-9]%W%' THEN N'YES'
-                    ELSE N'NO'
+                    WHEN C1.[Course (hr, crd)] LIKE N'%[0-9]%W%' THEN 1
+                    ELSE 0
                  END),
 				@UserAuthorizationKey
 			FROM Uploadfile.CurrentSemesterCourseOfferings AS C1
