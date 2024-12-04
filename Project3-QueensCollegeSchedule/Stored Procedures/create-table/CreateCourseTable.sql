@@ -24,8 +24,8 @@ BEGIN
 			CourseNum [Udt].[P3NameString] NULL,
             Semester [Udt].[P3NameString] NULL,
             DepartmentID INT NULL,
-            Credits DECIMAL(5,2) NULL,
             Hours DECIMAL(5,2) NULL,
+            Credits DECIMAL(5,2) NULL,
             WritingIntensive [Udt].[P3Bool] NULL,
 			UserAuthorizationKey INT NULL
 		)
