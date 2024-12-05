@@ -22,7 +22,7 @@ BEGIN
             Code [Udt].[P3Int] NOT NULL,
             [Limit] [Udt].[P3Int],
             [Enrolled] [Udt].[P3Int],
-            UserAuthorizationKey INT NOT NULL
+            UserAuthorizationKey INT NULL
         )
     
     -- Track workflow for the operation

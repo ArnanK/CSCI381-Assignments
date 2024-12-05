@@ -26,7 +26,7 @@ BEGIN
             ScheduleID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Schedule] DEFAULT (NEXT VALUE FOR [Project3].[ScheduleID_Seq]) PRIMARY KEY,
             [time] [Udt].[P3Time],
             [day] [Udt].[P3Day],
-            UserAuthorizationKey INT NOT NULL
+            UserAuthorizationKey INT  NULL
         )
 
 

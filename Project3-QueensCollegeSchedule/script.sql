@@ -28,3 +28,6 @@ exec [Project3].[CreateInstructorDeptTable] @UserAuthorizationKey = 2
 exec [Project3].[CreateSemesterTable] @UserAuthorizationKey = 3
 
 
+exec [Project3].[CreateClassSectionTable] @UserAuthorizationKey = 2
+
+

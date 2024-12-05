@@ -20,7 +20,7 @@ AS BEGIN
 -- Create a new table
     CREATE TABLE [Project3].[Semester]
         (
-        SemesterID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Semester] DEFAULT (NEXT VALUE FOR [Project3].[SemesterID_Seq]),
+        SemesterID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Semester] DEFAULT (NEXT VALUE FOR [Project3].[SemesterID_Seq]) PRIMARY KEY,
         [Name] Udt.[P3NameString],
         UserAuthorizationKey int
         );

@@ -26,7 +26,7 @@ BEGIN
         CourseModeID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_CourseModeID] DEFAULT (NEXT VALUE FOR [Project3].CourseModeID_Seq) PRIMARY KEY,
         CourseID [Udt].[P3Key] NOT NULL,
         ModeID [Udt].[P3Key] NOT NULL,
-        UserAuthorizationKey INT NOT NULL,
+        UserAuthorizationKey INT  NULL,
         FOREIGN KEY (ModeID) REFERENCES [Project3].[ModeOfInstruction](ModeID)
     )
 

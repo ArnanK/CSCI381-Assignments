@@ -27,7 +27,7 @@ BEGIN
         RoomBuildingID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_RoomBuilding] DEFAULT (NEXT VALUE FOR [Project3].[RoomBuildingID_Seq]) PRIMARY KEY,
         RoomID [Udt].[P3Key] NOT NULL,
         BuildingID [Udt].[P3Key] NOT NULL,
-        UserAuthorizationKey INT NOT NULL,
+        UserAuthorizationKey INT  NULL,
     )
 
 -- Track workflow for the operation

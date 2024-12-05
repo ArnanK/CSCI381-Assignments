@@ -53,8 +53,8 @@ BEGIN
     INCREMENT BY 1;
 
     -- Sequence for ModeID in Project3.ModeOfInstruction
-    DROP SEQUENCE IF EXISTS [Project3].[ModeID_Seq]
-    CREATE SEQUENCE [Project3].[ModeID_Seq]
+    DROP SEQUENCE IF EXISTS [Project3].[ModeOfInstructionID_Seq]
+    CREATE SEQUENCE [Project3].[ModeOfInstructionID_Seq]
     AS [Udt].[P3Key]
     START WITH 1
     INCREMENT BY 1;
