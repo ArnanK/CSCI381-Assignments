@@ -27,7 +27,6 @@ BEGIN
         CourseID [Udt].[P3Key] NOT NULL,
         ModeID [Udt].[P3Key] NOT NULL,
         UserAuthorizationKey INT  NULL,
-        FOREIGN KEY (ModeID) REFERENCES [Project3].[ModeOfInstruction](ModeID)
     )
 
     -- Track workflow for the operation

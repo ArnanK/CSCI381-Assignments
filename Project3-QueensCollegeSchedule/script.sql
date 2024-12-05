@@ -26,8 +26,13 @@ exec [Project3].[CreateSectionTable] @UserAuthorizationKey = 4
 exec [Project3].[CreateDepartmentTable] @UserAuthorizationKey = 2
 exec [Project3].[CreateInstructorDeptTable] @UserAuthorizationKey = 2
 exec [Project3].[CreateSemesterTable] @UserAuthorizationKey = 3
+exec [Project3].[CreateCourseModeTable] @UserAuthorizationKey = 4
+exec [Project3].[CreateCourseTable] @UserAuthorizationKey = 5
 
 
 exec [Project3].[CreateClassSectionTable] @UserAuthorizationKey = 2
+
+
+exec [Project3].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 2
 
 
