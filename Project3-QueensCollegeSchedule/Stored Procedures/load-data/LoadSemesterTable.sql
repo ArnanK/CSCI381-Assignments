@@ -10,10 +10,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-DROP PROCEDURE IF EXISTS [Project3].[LoadSemesterData]
+DROP PROCEDURE IF EXISTS [Project3].[LoadSemester]
 GO
 
-CREATE PROCEDURE [Project3].[LoadSemesterData]
+CREATE PROCEDURE [Project3].[LoadSemester]
     @UserAuthorizationKey INT
 AS BEGIN
     DECLARE @RowCount INT;

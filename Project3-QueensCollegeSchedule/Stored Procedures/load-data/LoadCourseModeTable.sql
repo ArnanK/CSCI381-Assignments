@@ -10,10 +10,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Drop the procedure if it already exists
-DROP PROCEDURE IF EXISTS [Project3].[LoadCourseModeData]
+DROP PROCEDURE IF EXISTS [Project3].[LoadCourseMode]
 GO
 
-CREATE PROCEDURE [Project3].[LoadCourseModeData]
+CREATE PROCEDURE [Project3].[LoadCourseMode]
     @UserAuthorizationKey INT
 AS 
 BEGIN
@@ -27,11 +27,11 @@ BEGIN
     INSERT INTO [Project3].[CourseMode] (CourseID, ModeID, UserAuthorizationKey)
     SELECT DISTINCT
         c.CourseID,
-        m.ModeID,
+        m.ModeOfInstructionID
         @UserAuthorizationKey
     FROM Uploadfile.CurrentSemesterCourseOfferings AS o
-    INNER JOIN [Project3].[Courses] AS c ON c.CourseName = o.course
-    INNER JOIN [Project3].[ModeOfInstruction] AS m ON m.ModeName = o.mode;
+    INNER JOIN [Project3].[Course] AS c ON c.CourseName = o.[Description]
+    INNER JOIN [Project3].[ModeOfInstruction] AS m ON m.ModeName = o.[Mode of Instruction];
 
     -- Get the row count
     SELECT @RowCount = COUNT(*) FROM [Project3].[CourseMode];

@@ -21,14 +21,11 @@ BEGIN
 			CourseID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Course] DEFAULT (NEXT VALUE FOR [Project3].CourseID_Seq) PRIMARY KEY,
 			CourseName [Udt].[P3NameString] NULL,
 			CourseNum [Udt].[P3NameString] NULL,
-            Semester [Udt].[P3NameString] NULL,
             DepartmentID [Udt].[P3Int] NOT NULL,
             Hours [Udt].[P3HourCredit] NULL,
             Credits [Udt].[P3HourCredit] NULL,
             WritingIntensive [Udt].[P3Bool] NULL,
 			UserAuthorizationKey INT NULL,
-			FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
-			FOREIGN KEY (UserAuthorizationKey) REFERENCES UserAuthorization(UserAuthorizationKey)
 		)
 
 	-- Track workflow for the operation

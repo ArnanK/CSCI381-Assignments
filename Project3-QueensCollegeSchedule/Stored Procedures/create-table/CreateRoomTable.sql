@@ -22,8 +22,8 @@ BEGIN
 	CREATE TABLE [Project3].[Room]
 		(
 			RoomID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Room] DEFAULT (NEXT VALUE FOR [Project3].[RoomID_Seq]) PRIMARY KEY,
-			RoomNumber [Udt].[P3Int] NOT NULL,
-			UserAuthorizationID INT  NULL
+			RoomNumber [Udt].[P3NameString] NOT NULL,
+			UserAuthorizationKey INT  NULL
 		)
 
 	-- Track workflow for the operation

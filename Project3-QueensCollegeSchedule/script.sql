@@ -30,9 +30,10 @@ exec [Project3].[CreateCourseModeTable] @UserAuthorizationKey = 4
 exec [Project3].[CreateCourseTable] @UserAuthorizationKey = 5
 
 
-exec [Project3].[CreateClassSectionTable] @UserAuthorizationKey = 2
+exec [Project3].[CreateClassTable] @UserAuthorizationKey = 2
 
 
 exec [Project3].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 2
+exec [Project3].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 2
 
-
+exec [Project3].[TruncateStarSchemaData] @UserAuthorizationKey = 1

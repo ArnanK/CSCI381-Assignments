@@ -25,7 +25,7 @@ BEGIN
     DROP TABLE IF EXISTS [Process].[WorkflowSteps];
     
     CREATE TABLE [Process].[WorkflowSteps](
-        WorkFlowStepKey [Udt].[P3Key] NOT NULL CONSTRAINT [DF_WorkflowSteps_Key] DEFAULT (NEXT VALUE FOR [Project3].[WorkflowStepsID_Seq]), -- primary key
+        WorkFlowStepKey [Udt].[P3Key] NOT NULL CONSTRAINT [DF_WorkflowSteps_Key] DEFAULT (NEXT VALUE FOR [Project3].[WorkflowStepsID_Seq]) PRIMARY KEY, -- primary key
         WorkFlowStepDescription NVARCHAR (100) NOT NULL,
         WorkFlowStepTableRowCount INT NULL DEFAULT (0),
         StartingDateTime DATETIME2(7) NULL DEFAULT (SYSDATETIME ()),
@@ -43,7 +43,7 @@ BEGIN
     DROP TABLE IF EXISTS [DbSecurity].[UserAuthorization]
 
     CREATE TABLE [DbSecurity].[UserAuthorization](
-        UserAuthorizationKey [Udt].[P3Key] NOT NULL CONSTRAINT [DF_UserAuthorization_Key] DEFAULT (NEXT VALUE FOR [Project3].[UserAuthorizationKey_Seq]), -- primary key
+        UserAuthorizationKey [Udt].[P3Key] NOT NULL CONSTRAINT [DF_UserAuthorization_Key] DEFAULT (NEXT VALUE FOR [Project3].[UserAuthorizationKey_Seq]) PRIMARY KEY, -- primary key
         ClassTime nvarchar (5) Null Default'10:45',
         [Individual Project] nvarchar (60) null default 'PROJECT 3 QueensCollegeSchedule',
         GroupMemberLastName nvarchar (35) NOT NULL,

@@ -16,6 +16,9 @@ BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
+
+    ALTER SEQUENCE [Project3].[UserAuthorizationKey_Seq] RESTART WITH 1
+
     INSERT INTO DbSecurity.UserAuthorization (GroupMemberFirstName, GroupMemberLastName)
     VALUES 
         ('Benjamin', 'Zhong'),

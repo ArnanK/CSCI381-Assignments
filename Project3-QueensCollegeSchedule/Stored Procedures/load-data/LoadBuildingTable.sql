@@ -8,10 +8,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-DROP PROCEDURE IF EXISTS [Project3].[LoadBuildingData]
+DROP PROCEDURE IF EXISTS [Project3].[LoadBuilding]
 GO
 
-CREATE PROCEDURE [Project3].[LoadBuildingData]
+CREATE PROCEDURE [Project3].[LoadBuilding]
 	@UserAuthorizationKey INT
 AS 
 BEGIN 

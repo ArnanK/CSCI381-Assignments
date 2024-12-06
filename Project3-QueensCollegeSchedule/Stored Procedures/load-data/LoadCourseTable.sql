@@ -17,12 +17,11 @@ AS
 BEGIN 
 	DECLARE @WorkFlowStepTableRowCount INT;
 	INSERT INTO [Project3].[Course]
-	(CourseName, CourseNum, SemesterID, DepartmentID, Hours, Credits, WritingIntensive, UserAuthorizationKey)
+	(CourseName, CourseNum, DepartmentID, Hours, Credits, WritingIntensive, UserAuthorizationKey)
 		(   
 			SELECT DISTINCT
 				C.[Description],
                 SUBSTRING(C.[Course (hr, crd)], CHARINDEX(' ', C.[Course (hr, crd)]), CHARINDEX('(', C.[Course (hr, crd)]) - CHARINDEX(' ', C.[Course (hr, crd)])-1),
-                C.Semester,
                 D.DepartmentID,
                 CAST(SUBSTRING(C.[Course (hr, crd)], CHARINDEX('(', C.[Course (hr, crd)])+1, CHARINDEX(',', C.[Course (hr, crd)]) - CHARINDEX('(', C.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
                 CAST(SUBSTRING(C.[Course (hr, crd)], CHARINDEX(',', C.[Course (hr, crd)])+1, CHARINDEX(')', C.[Course (hr, crd)]) - CHARINDEX(',', C.[Course (hr, crd)])-1) AS DECIMAL(5,2)),

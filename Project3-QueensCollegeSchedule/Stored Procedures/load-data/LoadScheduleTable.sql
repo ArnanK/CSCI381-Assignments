@@ -25,11 +25,11 @@ BEGIN
     SELECT 
         CASE
             WHEN DATALENGTH(o.time) > 2 THEN o.time
-            ELSE 'unknown time'
+            ELSE 'NA'
         END AS [time],
         CASE
             WHEN DATALENGTH(o.[Day]) > 1  THEN o.day 
-            ELSE 'days unknown'
+            ELSE 'NA'
         END AS [day],
         @UserAuthorizationKey
     FROM Uploadfile.CurrentSemesterCourseOfferings as o
@@ -37,8 +37,3 @@ BEGIN
 END
 GO 
 
-EXEC [Project3].[LoadSchedule] @UserAuthorizationKey=1 
-GO
-
-Select * 
-FROM [Project3].[Schedule]

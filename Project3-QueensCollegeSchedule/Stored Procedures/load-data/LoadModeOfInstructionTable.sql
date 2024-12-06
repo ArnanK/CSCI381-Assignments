@@ -20,7 +20,7 @@ BEGIN
 	(ModeName, UserAuthorizationKey)
 		(   
 			SELECT DISTINCT
-				C.ModeOfInstruction AS ModeName,
+				C.[Mode of instruction] AS ModeName,
 				@UserAuthorizationKey
 			FROM Uploadfile.CurrentSemesterCourseOfferings AS C
 		)

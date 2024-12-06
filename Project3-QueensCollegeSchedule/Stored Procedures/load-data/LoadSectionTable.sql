@@ -9,10 +9,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Drop the procedure if it already exists
-DROP PROCEDURE IF EXISTS [Project3].[LoadSectionData]
+DROP PROCEDURE IF EXISTS [Project3].[LoadSection]
 GO
 
-CREATE PROCEDURE [Project3].[LoadSectionData]
+CREATE PROCEDURE [Project3].[LoadSection]
     @UserAuthorizationKey INT
 AS 
 BEGIN 
@@ -22,7 +22,7 @@ BEGIN
     (SectionName, UserAuthorizationKey)
     SELECT DISTINCT
         CASE
-            WHEN DATALENGTH(o.section) > 0 THEN o.section
+            WHEN DATALENGTH(o.sec) > 0 THEN o.sec
             ELSE 'UNKNOWN'
         END AS SectionName,
         @UserAuthorizationKey

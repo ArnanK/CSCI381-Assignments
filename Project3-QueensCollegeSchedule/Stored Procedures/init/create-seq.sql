@@ -39,8 +39,8 @@ BEGIN
     INCREMENT BY 1;
 
     -- Sequence for ClassSectionID in Project3.ClassSection
-    DROP SEQUENCE IF EXISTS [Project3].[ClassSectionID_Seq]
-    CREATE SEQUENCE [Project3].[ClassSectionID_Seq]
+    DROP SEQUENCE IF EXISTS [Project3].[ClassID_Seq]
+    CREATE SEQUENCE [Project3].[ClassID_Seq]
     AS [Udt].[P3Key]
     START WITH 1
     INCREMENT BY 1;

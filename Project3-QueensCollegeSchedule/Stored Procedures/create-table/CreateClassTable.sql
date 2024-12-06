@@ -9,17 +9,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-DROP PROCEDURE IF EXISTS [Project3].[CreateClassSectionTable]
+DROP PROCEDURE IF EXISTS [Project3].[CreateClassTable]
 GO
-CREATE PROCEDURE [Project3].[CreateClassSectionTable]
+CREATE PROCEDURE [Project3].[CreateClassTable]
     @UserAuthorizationKey INT
 AS 
 BEGIN 
-    DROP TABLE IF EXISTS [Project3].[ClassSection]
-    CREATE TABLE [Project3].[ClassSection]
+    DROP TABLE IF EXISTS [Project3].[Class]
+    CREATE TABLE [Project3].[Class]
         (
-            ClassSectionID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_ClassSection] DEFAULT (NEXT VALUE FOR [Project3].[ClassSectionID_Seq]) PRIMARY KEY,
-            [InsturctorID] [Udt].[P3Key],
+            ClassID [Udt].[P3Key] NOT NULL CONSTRAINT [DF_Class] DEFAULT (NEXT VALUE FOR [Project3].[ClassID_Seq]) PRIMARY KEY,
+            [InstructorID] [Udt].[P3Key],
             [ScheduleID] [Udt].[P3Key],
             [SemesterID] [Udt].[P3Key],
             [RoomBuildingID] [Udt].[P3Key],
@@ -32,7 +32,7 @@ BEGIN
     
     -- Track workflow for the operation
     EXEC [Process].[usp_TrackWorkFlow]
-        @WorkFlowStepDescription = 'Create Class Details Table',
+        @WorkFlowStepDescription = 'Create Class Table',
         @UserAuthorizationKey = @UserAuthorizationKey,
         @WorkFlowStepTableRowCount = -1;
 END

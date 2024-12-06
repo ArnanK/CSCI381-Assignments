@@ -20,7 +20,7 @@ AS
 BEGIN
 
 	INSERT INTO [Project3].[Room]
-		(RoomNumber, UserAuthorizationID)
+		(RoomNumber, UserAuthorizationKey)
 	(
 		SELECT DISTINCT
 			CASE 

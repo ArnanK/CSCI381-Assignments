@@ -29,17 +29,20 @@ BEGIN
     --
     --	Load the star schema
     --
-    EXEC  [Project3].[Load_DimProductCategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimProductSubcategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimProduct] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_SalesManagers] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimGender] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimMaritalStatus] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimOccupation] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimOrderDate] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimTerritory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_DimCustomer] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project3].[Load_Data] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadBuilding] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadClassDetails] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadDepartment] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadInstructor] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadInstructorDept] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadModeOfInstruction] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadCourse] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadRoom] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadRoomBuilding] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadSchedule] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadSection] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadSemester] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project3].[LoadCourseMode] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+
   --
     --	Recreate all of the foreign keys prior after loading the star schema
     --

@@ -10,10 +10,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Drop the procedure if it already exists
-DROP PROCEDURE IF EXISTS [Project3].[LoadRoomBuildingData]
+DROP PROCEDURE IF EXISTS [Project3].[LoadRoomBuilding]
 GO
 
-CREATE PROCEDURE [Project3].[LoadRoomBuildingData]
+CREATE PROCEDURE [Project3].[LoadRoomBuilding]
     @UserAuthorizationKey INT
 AS
 BEGIN
