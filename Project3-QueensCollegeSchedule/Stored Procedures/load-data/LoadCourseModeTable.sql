@@ -27,7 +27,7 @@ BEGIN
     INSERT INTO [Project3].[CourseMode] (CourseID, ModeID, UserAuthorizationKey)
     SELECT DISTINCT
         c.CourseID,
-        m.ModeOfInstructionID
+        m.ModeOfInstructionID,
         @UserAuthorizationKey
     FROM Uploadfile.CurrentSemesterCourseOfferings AS o
     INNER JOIN [Project3].[Course] AS c ON c.CourseName = o.[Description]
