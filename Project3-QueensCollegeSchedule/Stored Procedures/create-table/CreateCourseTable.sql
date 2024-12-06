@@ -11,7 +11,6 @@ GO
 
 DROP PROCEDURE IF EXISTS [Project3].[CreateCourseTable]
 GO
-
 CREATE PROCEDURE [Project3].[CreateCourseTable]
 	@UserAuthorizationKey INT
 AS 
@@ -23,11 +22,13 @@ BEGIN
 			CourseName [Udt].[P3NameString] NULL,
 			CourseNum [Udt].[P3NameString] NULL,
             Semester [Udt].[P3NameString] NULL,
-            DepartmentID INT NULL,
-            Hours DECIMAL(5,2) NULL,
-            Credits DECIMAL(5,2) NULL,
+            DepartmentID [Udt].[P3Int] NOT NULL,
+            Hours [Udt].[P3HourCredit] NULL,
+            Credits [Udt].[P3HourCredit] NULL,
             WritingIntensive [Udt].[P3Bool] NULL,
-			UserAuthorizationKey INT NULL
+			UserAuthorizationKey INT NULL,
+			FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
+			FOREIGN KEY (UserAuthorizationKey) REFERENCES UserAuthorization(UserAuthorizationKey)
 		)
 
 	-- Track workflow for the operation
@@ -37,3 +38,5 @@ BEGIN
         @WorkFlowStepTableRowCount = -1;
 END
 GO
+
+-- EXEC [Project3].[CreateCourseTable] @UserAuthorizationKey=1

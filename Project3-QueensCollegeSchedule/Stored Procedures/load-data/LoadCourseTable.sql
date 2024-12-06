@@ -20,18 +20,20 @@ BEGIN
 	(CourseName, CourseNum, SemesterID, DepartmentID, Hours, Credits, WritingIntensive, UserAuthorizationKey)
 		(   
 			SELECT DISTINCT
-				SUBSTRING(C1.[Course (hr, crd)], 0, CHARINDEX(' ', C1.[Course (hr, crd)])),
-                SUBSTRING(C1.[Course (hr, crd)], CHARINDEX(' ', C1.[Course (hr, crd)]), CHARINDEX('(', C1.[Course (hr, crd)]) - CHARINDEX(' ', C1.[Course (hr, crd)])-1),
-                C1.Semester,
-                1234, --Replace with DepartmentID
-                CAST(SUBSTRING(C1.[Course (hr, crd)], CHARINDEX('(', C1.[Course (hr, crd)])+1, CHARINDEX(',', C1.[Course (hr, crd)]) - CHARINDEX('(', C1.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
-                CAST(SUBSTRING(C1.[Course (hr, crd)], CHARINDEX(',', C1.[Course (hr, crd)])+1, CHARINDEX(')', C1.[Course (hr, crd)]) - CHARINDEX(',', C1.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
+				C.[Description],
+                SUBSTRING(C.[Course (hr, crd)], CHARINDEX(' ', C.[Course (hr, crd)]), CHARINDEX('(', C.[Course (hr, crd)]) - CHARINDEX(' ', C.[Course (hr, crd)])-1),
+                C.Semester,
+                D.DepartmentID,
+                CAST(SUBSTRING(C.[Course (hr, crd)], CHARINDEX('(', C.[Course (hr, crd)])+1, CHARINDEX(',', C.[Course (hr, crd)]) - CHARINDEX('(', C.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
+                CAST(SUBSTRING(C.[Course (hr, crd)], CHARINDEX(',', C.[Course (hr, crd)])+1, CHARINDEX(')', C.[Course (hr, crd)]) - CHARINDEX(',', C.[Course (hr, crd)])-1) AS DECIMAL(5,2)),
                 (CASE
-                    WHEN C1.[Course (hr, crd)] LIKE N'%[0-9]%W%' THEN 1
+                    WHEN C.[Course (hr, crd)] LIKE N'%[0-9]%W%' THEN 1
                     ELSE 0
                  END),
 				@UserAuthorizationKey
-			FROM Uploadfile.CurrentSemesterCourseOfferings AS C1
+			FROM Uploadfile.CurrentSemesterCourseOfferings AS C
+            INNER JOIN [Project3].[Department] AS D
+                ON SUBSTRING(C.[Course (hr, crd)],0,CHARINDEX(' ',C.[Course (hr, crd)], 0)) = D.DeptName
 		)
 	SELECT @WorkFlowStepTableRowCount = @@ROWCOUNT;
 		-- Track workflow for the operation
@@ -42,3 +44,5 @@ BEGIN
 END
 GO
 
+-- SELECT C.[Description]
+-- FROM Uploadfile.CurrentSemesterCourseOfferings AS C

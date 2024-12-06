@@ -27,6 +27,9 @@ BEGIN
     IF NOT EXISTS(SELECT 1 FROM sys.types WHERE name='P3Int' AND schema_id = SCHEMA_ID('Udt'))
         EXEC('CREATE TYPE [Udt].[P3Int] FROM int NULL');
 
+    IF NOT EXISTS(SELECT 1 FROM sys.types WHERE name='P3HourCredit' AND schema_id = SCHEMA_ID('Udt'))
+        EXEC('CREATE TYPE [Udt].[P3HourCredit] FROM DECIMAL(5,2) NULL');
+
 
 END
 GO
