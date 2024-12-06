@@ -18,11 +18,7 @@ BEGIN
  	--
     EXEC  [Project3].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 1;
     --
-    --	Check row count before truncation
-    EXEC	[Project3].[ShowTableStatusRowCount]
-      @UserAuthorizationKey = 3,  -- Change -1 to the appropriate UserAuthorizationKey
-      @TableStatus = N'''Pre-truncate of tables'''
-      --
+
       --	Always truncate the Star Schema Data
     --
     EXEC  [Project3].[TruncateStarSchemaData] @UserAuthorizationKey = 1; 
@@ -47,15 +43,8 @@ BEGIN
     --	Recreate all of the foreign keys prior after loading the star schema
     --
  	--
-	--	Check row count before truncation
-	EXEC	[Project3].[ShowTableStatusRowCount]
-		@UserAuthorizationKey = 3,  -- Change -1 to the appropriate UserAuthorizationKey
-		@TableStatus = N'''Row Count after loading the star schema'''
-	--
+
    EXEC [Project3].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 1;  -- Change -1 to the appropriate UserAuthorizationKey
     --
 END;
 GO
-
-SELECT * 
-FROM DbSecurity.UserAuthorization
