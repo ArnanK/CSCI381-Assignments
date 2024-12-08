@@ -1130,11 +1130,14 @@ BEGIN
             Code, [Limit], Enrolled, UserAuthorizationKey
         )
     (
-        SELECT DISTINCT code, 
-            limit, 
-            enrolled,
-            @UserAuthorizationKey
-        FROM Uploadfile.CurrentSemesterCourseOfferings 
+        Select DISTINCT code,
+        CASE 
+            WHEN Limit < Enrolled THEN Enrolled
+            ELSE LIMIT
+        END AS [limit],
+        Enrolled,
+        @UserAuthorizationKey
+        FROM UploadFile.CurrentSemesterCourseOfferings
     )
     
     PRINT 'done'
