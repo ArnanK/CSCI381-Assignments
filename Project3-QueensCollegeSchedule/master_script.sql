@@ -1130,11 +1130,14 @@ BEGIN
             Code, [Limit], Enrolled, UserAuthorizationKey
         )
     (
-        SELECT DISTINCT code, 
-            limit, 
-            enrolled,
-            @UserAuthorizationKey
-        FROM Uploadfile.CurrentSemesterCourseOfferings 
+        Select DISTINCT code,
+        CASE 
+            WHEN Limit < Enrolled THEN Enrolled
+            ELSE LIMIT
+        END AS [limit],
+        Enrolled,
+        @UserAuthorizationKey
+        FROM UploadFile.CurrentSemesterCourseOfferings
     )
     
     PRINT 'done'
@@ -1179,7 +1182,7 @@ BEGIN
     INSERT INTO [Project3].[CourseMode] (CourseID, ModeID, UserAuthorizationKey)
     SELECT DISTINCT
         c.CourseID,
-        m.ModeOfInstructionID
+        m.ModeOfInstructionID,
         @UserAuthorizationKey
     FROM Uploadfile.CurrentSemesterCourseOfferings AS o
     INNER JOIN [Project3].[Course] AS c ON c.CourseName = o.[Description]
