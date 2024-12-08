@@ -1344,8 +1344,15 @@ BEGIN
 	(FirstName, LastName, UserAuthorizationKey)
 		(   
 			SELECT DISTINCT
-				SUBSTRING(C.Instructor, CHARINDEX(' ',C.Instructor,0)+1, LEN(C.Instructor) ), 
-				SUBSTRING(C.Instructor, 0, CHARINDEX(',',C.Instructor,0)),
+				CASE	SUBSTRING(C.Instructor, CHARINDEX(' ',C.Instructor,0)+1, LEN(C.Instructor) ) 
+						WHEN ',' THEN 'NA'
+						ELSE SUBSTRING(C.Instructor, CHARINDEX(' ',C.Instructor,0)+1, LEN(C.Instructor) ) 
+				END, 
+				
+				CASE SUBSTRING(C.Instructor, 0, CHARINDEX(',',C.Instructor,0))
+					WHEN NULL THEN 'NA'
+					ELSE SUBSTRING(C.Instructor, 0, CHARINDEX(',',C.Instructor,0))
+				END,
 				@UserAuthorizationKey
 			FROM Uploadfile.CurrentSemesterCourseOfferings AS C
 		)
