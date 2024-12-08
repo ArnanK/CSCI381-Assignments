@@ -25,6 +25,10 @@ BEGIN
 			FROM Uploadfile.CurrentSemesterCourseOfferings AS C
 		)
 	-- EXEC workflowsteps procedure
+	EXEC [Process].[usp_TrackWorkFlow]
+        @WorkFlowStepDescription = 'Load Mode of Instruction Table',
+        @UserAuthorizationKey = @UserAuthorizationKey,
+        @WorkFlowStepTableRowCount = -1;
 END
 GO
 
